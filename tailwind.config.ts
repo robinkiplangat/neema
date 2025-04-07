@@ -75,6 +75,14 @@ export default {
 					800: '#5b21b6',
 					900: '#4c1d95',
 					950: '#3730a3',
+				},
+				pastel: {
+					pink: '#FFDEE2',
+					peach: '#FDE1D3',
+					lavender: '#E4D7F5',
+					mint: '#D4F5E9',
+					lightpink: '#FFE6EA',
+					blush: '#FFCCD5',
 				}
 			},
 			borderRadius: {

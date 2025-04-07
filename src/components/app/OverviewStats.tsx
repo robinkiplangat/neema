@@ -8,7 +8,7 @@ import { Clock, TrendingUp, CheckCircle, AlertCircle } from "lucide-react";
 const OverviewStats = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <Card>
+      <Card className="pastel-card">
         <CardContent className="pt-6">
           <div className="flex items-start justify-between">
             <div>
@@ -19,14 +19,14 @@ const OverviewStats = () => {
                 +4.5h from last week
               </p>
             </div>
-            <div className="bg-magnetic-100 p-2 rounded-md">
-              <Clock className="h-5 w-5 text-magnetic-600" />
+            <div className="bg-pastel-pink p-2 rounded-md">
+              <Clock className="h-5 w-5 text-gray-700" />
             </div>
           </div>
         </CardContent>
       </Card>
       
-      <Card>
+      <Card className="pastel-card">
         <CardContent className="pt-6">
           <div className="flex items-start justify-between">
             <div>
@@ -37,14 +37,14 @@ const OverviewStats = () => {
                 78% completion rate
               </p>
             </div>
-            <div className="bg-green-100 p-2 rounded-md">
+            <div className="bg-pastel-mint p-2 rounded-md">
               <CheckCircle className="h-5 w-5 text-green-600" />
             </div>
           </div>
         </CardContent>
       </Card>
       
-      <Card>
+      <Card className="pastel-card">
         <CardContent className="pt-6">
           <div className="flex items-start justify-between">
             <div>
@@ -54,14 +54,14 @@ const OverviewStats = () => {
                 85% billable rate
               </p>
             </div>
-            <div className="bg-blue-100 p-2 rounded-md">
-              <TrendingUp className="h-5 w-5 text-blue-600" />
+            <div className="bg-pastel-lavender p-2 rounded-md">
+              <TrendingUp className="h-5 w-5 text-purple-600" />
             </div>
           </div>
         </CardContent>
       </Card>
       
-      <Card>
+      <Card className="pastel-card">
         <CardContent className="pt-6">
           <div className="flex items-start justify-between">
             <div>
@@ -72,7 +72,7 @@ const OverviewStats = () => {
                 2 due this week
               </p>
             </div>
-            <div className="bg-amber-100 p-2 rounded-md">
+            <div className="bg-pastel-peach p-2 rounded-md">
               <AlertCircle className="h-5 w-5 text-amber-600" />
             </div>
           </div>

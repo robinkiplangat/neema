@@ -35,7 +35,7 @@ const Dashboard = () => {
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-pastel-blush hover:text-pastel-pink transition-colors">Dashboard</h1>
             <p className="text-muted-foreground">
               Welcome back! Here's an overview of your workspace.
             </p>
