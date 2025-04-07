@@ -50,18 +50,18 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
       <div 
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out bg-white border-r border-border ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out bg-white/90 backdrop-blur-sm border-r border-border shadow-sm ${
           sidebarOpen || !isMobile ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex h-full flex-col">
           <div className="flex items-center justify-between px-5 py-4 border-b">
             <Link to="/dashboard" className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded bg-primary flex items-center justify-center">
-                <span className="text-white font-bold text-lg">M</span>
+              <div className="h-8 w-8 rounded bg-pastel-lightpink flex items-center justify-center">
+                <span className="text-pastel-pink font-bold text-lg">M</span>
               </div>
               <span className="text-xl font-bold">Magnetic</span>
             </Link>
@@ -90,7 +90,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   to={item.href}
                   className={`flex items-center justify-between px-3 py-2 rounded-md text-sm transition-colors ${
                     location.pathname === item.href
-                      ? "bg-primary/10 text-primary font-medium"
+                      ? "bg-pastel-lightpink/20 text-primary font-medium"
                       : "text-foreground/75 hover:bg-secondary hover:text-foreground"
                   }`}
                   onClick={isMobile ? toggleSidebar : undefined}
@@ -146,15 +146,15 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       
       {/* Mobile Header */}
       {isMobile && (
-        <div className="fixed top-0 left-0 right-0 z-40 bg-background border-b py-3 px-4">
+        <div className="fixed top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-sm border-b py-3 px-4 shadow-sm">
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="icon" onClick={toggleSidebar}>
               <Menu className="h-5 w-5" />
             </Button>
             
             <Link to="/dashboard" className="flex items-center gap-2">
-              <div className="h-7 w-7 rounded bg-primary flex items-center justify-center">
-                <span className="text-white font-bold text-sm">M</span>
+              <div className="h-7 w-7 rounded bg-pastel-lightpink flex items-center justify-center">
+                <span className="text-pastel-pink font-bold text-sm">M</span>
               </div>
               <span className="text-lg font-bold">Magnetic</span>
             </Link>
@@ -169,7 +169,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       
       {/* Main Content */}
       <div className={`flex-1 ${isMobile ? "pt-16" : ""}`} style={{ marginLeft: isMobile ? 0 : '16rem' }}>
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {children}
         </main>
       </div>

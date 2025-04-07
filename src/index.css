@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 220 30% 98%;
     --foreground: 220 10% 20%;
 
     --card: 0 0% 100%;
@@ -103,7 +103,7 @@
 
 @layer components {
   .magnetic-gradient {
-    @apply bg-gradient-to-r from-[#ec174c] to-[#3c6df0];
+    @apply bg-gradient-to-r from-pastel-lightpink to-pastel-sky;
   }
   
   .magnetic-button {
@@ -118,7 +118,7 @@
   }
 
   .pastel-card {
-    @apply bg-white border border-border rounded-lg shadow-sm
+    @apply bg-white/80 border border-border rounded-lg shadow-sm
     hover:shadow-md transition-all duration-300;
   }
 }

@@ -85,8 +85,8 @@ const ProductivityChart = () => {
         />
         <Tooltip content={<CustomTooltip />} />
         <Legend wrapperStyle={{ paddingTop: 10 }} />
-        <Bar dataKey="billable" name="Billable Hours" yAxisId="left" stackId="a" fill="#ec174c" radius={[4, 4, 0, 0]} />
-        <Bar dataKey="nonBillable" name="Non-Billable" yAxisId="left" stackId="a" fill="#3c6df0" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="billable" name="Billable Hours" yAxisId="left" stackId="a" fill="#D4F5E9" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="nonBillable" name="Non-Billable" yAxisId="left" stackId="a" fill="#E4D7F5" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -113,9 +113,9 @@ const ProductivityChart = () => {
         />
         <Tooltip content={<CustomTooltip />} />
         <Legend wrapperStyle={{ paddingTop: 10 }} />
-        <Area type="monotone" dataKey="billable" name="Billable Hours" yAxisId="left" fill="#ec174c" stroke="#ec174c" fillOpacity={0.2} />
-        <Bar dataKey="nonBillable" name="Non-Billable" yAxisId="left" fill="#3c6df0" radius={[4, 4, 0, 0]} />
-        <Line type="monotone" dataKey="utilization" name="Utilization %" yAxisId="right" stroke="#24A148" strokeWidth={2} dot={{ r: 4 }} />
+        <Area type="monotone" dataKey="billable" name="Billable Hours" yAxisId="left" fill="#FFE6EA" stroke="#FFE6EA" fillOpacity={0.6} />
+        <Bar dataKey="nonBillable" name="Non-Billable" yAxisId="left" fill="#D0E8FF" radius={[4, 4, 0, 0]} />
+        <Line type="monotone" dataKey="utilization" name="Utilization %" yAxisId="right" stroke="#9F9EA1" strokeWidth={2} dot={{ r: 4 }} />
       </ComposedChart>
     </ResponsiveContainer>
   );
@@ -126,20 +126,11 @@ const ProductivityChart = () => {
     const totalUtilization = data.reduce((sum, item) => sum + item.utilization, 0);
     const avgUtilization = Math.round(totalUtilization / data.filter(item => item.utilization > 0).length);
     
-    // Static gauge data
-    const gaugeData = [
-      { name: "Poor", value: 25, color: "#ff4d4f" },
-      { name: "Average", value: 25, color: "#faad14" }, 
-      { name: "Good", value: 25, color: "#52c41a" },
-      { name: "Excellent", value: 25, color: "#13c2c2" },
-      { name: "Current", value: avgUtilization, color: "#ec174c" }
-    ];
-    
     return (
       <div className="flex flex-col items-center justify-center h-full">
         <div className="text-center">
           <h3 className="text-xl font-medium mb-4">Average Utilization</h3>
-          <div className="text-6xl font-bold mb-4 text-primary">{avgUtilization}%</div>
+          <div className="text-6xl font-bold mb-4 text-pastel-mint">{avgUtilization}%</div>
           <div className="text-sm text-muted-foreground">
             {avgUtilization >= 85 ? "Excellent" : 
              avgUtilization >= 75 ? "Good" : 
@@ -158,7 +149,7 @@ const ProductivityChart = () => {
   };
 
   return (
-    <Card className="border-none shadow-sm">
+    <Card className="border-none shadow-sm bg-white/80">
       <CardHeader className="pb-2 flex flex-row justify-between items-center">
         <CardTitle className="text-lg font-medium">Productivity Overview</CardTitle>
         <div className="flex items-center space-x-2">
@@ -210,15 +201,15 @@ const ProductivityChart = () => {
         <div className="h-80">
           <ChartContainer
             config={{
-              billable: { color: "#ec174c" },
-              nonBillable: { color: "#3c6df0" },
-              target: { color: "#aaaaaa" },
-              utilization: { color: "#24A148" }
+              billable: { color: "#D4F5E9" },
+              nonBillable: { color: "#E4D7F5" },
+              target: { color: "#aaadb0" },
+              utilization: { color: "#8E9196" }
             }}
           >
-            {chartType === "stacked" && renderStackedBarChart()}
-            {chartType === "composed" && renderComposedChart()}
-            {chartType === "gauge" && renderUtilizationGauge()}
+            {chartType === "stacked" ? renderStackedBarChart() : 
+             chartType === "composed" ? renderComposedChart() : 
+             renderUtilizationGauge()}
           </ChartContainer>
         </div>
       </CardContent>
