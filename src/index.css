@@ -16,8 +16,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 10% 20%;
 
-    --primary: 350 40% 70%;
-    --primary-foreground: 0 0% 20%;
+    --primary: 348 84% 50%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 220 20% 96%;
     --secondary-foreground: 220 10% 20%;
@@ -25,26 +25,26 @@
     --muted: 220 20% 96%;
     --muted-foreground: 220 10% 45%;
 
-    --accent: 350 40% 70%;
-    --accent-foreground: 0 0% 20%;
+    --accent: 348 84% 50%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 220 10% 92%;
     --input: 220 10% 92%;
-    --ring: 350 40% 70%;
+    --ring: 348 84% 50%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 350 25% 25%;
+    --sidebar-background: 348 70% 20%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 350 40% 70%;
-    --sidebar-primary-foreground: 0 0% 20%;
-    --sidebar-accent: 350 20% 35%;
+    --sidebar-primary: 348 84% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 348 60% 30%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 350 20% 35%;
-    --sidebar-ring: 350 20% 45%;
+    --sidebar-border: 348 60% 30%;
+    --sidebar-ring: 348 60% 40%;
   }
 
   .dark {
@@ -57,8 +57,8 @@
     --popover: 220 10% 12%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 350 30% 60%;
-    --primary-foreground: 0 0% 20%;
+    --primary: 348 70% 50%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 220 10% 22%;
     --secondary-foreground: 0 0% 95%;
@@ -66,24 +66,24 @@
     --muted: 220 10% 22%;
     --muted-foreground: 220 10% 70%;
 
-    --accent: 350 30% 60%;
-    --accent-foreground: 0 0% 20%;
+    --accent: 348 70% 50%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 220 10% 22%;
     --input: 220 10% 22%;
-    --ring: 350 30% 60%;
+    --ring: 348 70% 50%;
 
     --sidebar-background: 220 10% 8%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 350 30% 60%;
-    --sidebar-primary-foreground: 0 0% 20%;
-    --sidebar-accent: 350 20% 35%;
+    --sidebar-primary: 348 70% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 348 50% 35%;
     --sidebar-accent-foreground: 0 0% 95%;
     --sidebar-border: 220 70% 15%;
-    --sidebar-ring: 350 30% 60%;
+    --sidebar-ring: 348 70% 50%;
   }
 }
 
@@ -103,7 +103,7 @@
 
 @layer components {
   .magnetic-gradient {
-    @apply bg-gradient-to-r from-pastel-pink to-pastel-lavender;
+    @apply bg-gradient-to-r from-[#ec174c] to-[#3c6df0];
   }
   
   .magnetic-button {
