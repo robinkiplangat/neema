@@ -15,7 +15,7 @@ const ProjectOverview = () => {
       totalTasks: 20,
       dueDate: "Apr 15, 2025",
       status: "On Track",
-      statusColor: "text-green-600 bg-pastel-mint",
+      statusColor: "text-green-600 bg-pastel-mint/80",
     },
     {
       id: 2,
@@ -25,7 +25,7 @@ const ProjectOverview = () => {
       totalTasks: 18,
       dueDate: "May 20, 2025",
       status: "At Risk",
-      statusColor: "text-amber-600 bg-pastel-peach",
+      statusColor: "text-amber-600 bg-pastel-peach/80",
     },
     {
       id: 3,
@@ -35,14 +35,14 @@ const ProjectOverview = () => {
       totalTasks: 10,
       dueDate: "Apr 10, 2025",
       status: "On Track",
-      statusColor: "text-green-600 bg-pastel-mint",
+      statusColor: "text-green-600 bg-pastel-mint/80",
     },
   ];
 
   return (
     <Card className="pastel-card">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-lg">Project Overview</CardTitle>
+        <CardTitle className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-pastel-blush to-pastel-pink">Project Overview</CardTitle>
         <Button variant="ghost" size="sm" asChild className="text-pastel-blush hover:text-pastel-pink hover:bg-pastel-pink/10">
           <Link to="/projects" className="flex items-center">
             All Projects
@@ -53,10 +53,10 @@ const ProjectOverview = () => {
       <CardContent>
         <div className="space-y-4">
           {projects.map((project) => (
-            <div key={project.id} className="border border-pastel-pink/20 rounded-md p-4 bg-white">
+            <div key={project.id} className="border border-pastel-pink/20 rounded-xl p-4 bg-white hover:shadow-md transition-all duration-300">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                 <h3 className="font-medium">{project.name}</h3>
-                <div className={`px-2 py-1 rounded-full text-xs font-medium ${project.statusColor}`}>
+                <div className={`px-2.5 py-1 rounded-full text-xs font-medium ${project.statusColor}`}>
                   {project.status}
                 </div>
               </div>
@@ -67,7 +67,7 @@ const ProjectOverview = () => {
                     <span>Progress</span>
                     <span className="font-medium">{project.progress}%</span>
                   </div>
-                  <Progress value={project.progress} className="bg-pastel-pink/20" />
+                  <Progress value={project.progress} className="bg-pastel-pink/20 h-2" />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4 text-sm">

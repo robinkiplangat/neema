@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 350 100% 99%;
+    --background: 350 30% 99%;
     --foreground: 350 10% 15%;
 
     --card: 0 0% 100%;
@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 350 10% 15%;
 
-    --primary: 338 83% 71%;
+    --primary: 338 83% 76%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 340 20% 96%;
@@ -25,21 +25,21 @@
     --muted: 340 20% 96%;
     --muted-foreground: 350 10% 45%;
 
-    --accent: 338 94% 68%;
+    --accent: 338 94% 72%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 340 5.9% 90%;
-    --input: 340 5.9% 90%;
-    --ring: 338 83% 71%;
+    --border: 340 10% 92%;
+    --input: 340 10% 92%;
+    --ring: 338 83% 76%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 338 83% 12%;
+    --sidebar-background: 338 30% 12%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 338 83% 71%;
+    --sidebar-primary: 338 83% 76%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 338 94% 20%;
     --sidebar-accent-foreground: 0 0% 100%;
@@ -57,7 +57,7 @@
     --popover: 350 10% 12%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 338 83% 64%;
+    --primary: 338 83% 68%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 350 10% 22%;
@@ -66,7 +66,7 @@
     --muted: 350 10% 22%;
     --muted-foreground: 350 10% 70%;
 
-    --accent: 338 94% 60%;
+    --accent: 338 94% 64%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
@@ -74,16 +74,16 @@
 
     --border: 350 10% 22%;
     --input: 350 10% 22%;
-    --ring: 338 83% 64%;
+    --ring: 338 83% 68%;
 
     --sidebar-background: 350 10% 8%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 338 83% 64%;
+    --sidebar-primary: 338 83% 68%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 338 94% 30%;
     --sidebar-accent-foreground: 0 0% 95%;
     --sidebar-border: 338 94% 15%;
-    --sidebar-ring: 338 90% 60%;
+    --sidebar-ring: 338 90% 64%;
   }
 }
 
@@ -93,6 +93,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Nunito', 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', sans-serif;
   }
 }
@@ -103,7 +106,7 @@
   }
   
   .magnetic-button {
-    @apply px-6 py-3 rounded-md font-medium transition-all duration-300
+    @apply px-6 py-3 rounded-xl font-medium transition-all duration-300
     bg-gradient-to-r from-pastel-blush to-pastel-pink text-gray-800
     hover:from-pastel-pink hover:to-pastel-blush
     shadow-md hover:shadow-lg;
@@ -114,6 +117,15 @@
   }
 
   .pastel-card {
-    @apply bg-gradient-to-br from-white to-pastel-pink/20 border border-pastel-pink/30 shadow-sm;
+    @apply bg-white border border-pastel-pink/30 rounded-xl shadow-sm
+    hover:shadow-md transition-all duration-300;
+  }
+  
+  .pattern-bg {
+    @apply bg-gradient-dots bg-[length:20px_20px];
+  }
+  
+  .shape-blob {
+    @apply absolute -z-10 blur-3xl opacity-20 rounded-full;
   }
 }

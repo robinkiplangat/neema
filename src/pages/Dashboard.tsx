@@ -7,6 +7,7 @@ import TimeTracker from "@/components/app/TimeTracker";
 import ProjectOverview from "@/components/app/ProjectOverview";
 import { useToast } from "@/hooks/use-toast";
 import PageTitle from "@/components/shared/PageTitle";
+import { ShapesBlob } from "@/components/ui/shapes";
 
 const Dashboard = () => {
   const [isTracking, setIsTracking] = useState(false);
@@ -32,30 +33,35 @@ const Dashboard = () => {
     <AppLayout>
       <PageTitle title="Dashboard | Magnetic" />
       
-      <div className="space-y-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-pastel-blush hover:text-pastel-pink transition-colors">Dashboard</h1>
-            <p className="text-muted-foreground">
-              Welcome back! Here's an overview of your workspace.
-            </p>
+      <div className="relative">
+        <ShapesBlob color="pastel-pink" className="left-0 top-20" />
+        <ShapesBlob color="pastel-lavender" className="right-0 bottom-40" />
+        
+        <div className="space-y-8 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pastel-blush to-pastel-pink">Dashboard</h1>
+              <p className="text-muted-foreground">
+                Welcome back! Here's an overview of your workspace.
+              </p>
+            </div>
+            
+            <TimeTracker 
+              isTracking={isTracking}
+              onStartTimer={handleStartTimer}
+              onStopTimer={handleStopTimer}
+            />
           </div>
           
-          <TimeTracker 
-            isTracking={isTracking}
-            onStartTimer={handleStartTimer}
-            onStopTimer={handleStopTimer}
-          />
-        </div>
-        
-        <OverviewStats />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <ProjectOverview />
-          </div>
-          <div>
-            <RecentActivity />
+          <OverviewStats />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <ProjectOverview />
+            </div>
+            <div>
+              <RecentActivity />
+            </div>
           </div>
         </div>
       </div>

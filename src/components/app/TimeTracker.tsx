@@ -44,10 +44,10 @@ const TimeTracker = ({ isTracking, onStartTimer, onStopTimer }: TimeTrackerProps
   });
 
   return (
-    <div className="w-full md:w-auto bg-white rounded-xl border shadow-sm p-3 flex flex-col sm:flex-row items-center gap-3">
+    <div className="w-full md:w-auto bg-white rounded-xl border shadow-sm p-3 flex flex-col sm:flex-row items-center gap-3 hover:shadow-md transition-all duration-300">
       <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
         <Select value={project} onValueChange={setProject}>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full rounded-lg">
             <SelectValue placeholder="Select project" />
           </SelectTrigger>
           <SelectContent>
@@ -59,7 +59,7 @@ const TimeTracker = ({ isTracking, onStartTimer, onStopTimer }: TimeTrackerProps
         </Select>
         
         <Select value={task} onValueChange={setTask}>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full rounded-lg">
             <SelectValue placeholder="Select task" />
           </SelectTrigger>
           <SelectContent>
@@ -75,14 +75,14 @@ const TimeTracker = ({ isTracking, onStartTimer, onStopTimer }: TimeTrackerProps
       <div className="flex items-center gap-2 w-full sm:w-auto">
         {isTracking ? (
           <>
-            <div className="flex items-center gap-2 bg-magnetic-50 text-magnetic-600 font-mono font-medium px-3 py-1.5 rounded-md">
+            <div className="flex items-center gap-2 bg-pastel-pink/10 text-pastel-blush font-mono font-medium px-3 py-1.5 rounded-md">
               <Clock className="h-4 w-4" />
               <span>{elapsedTime}</span>
             </div>
             <Button 
               variant="outline" 
               size="icon" 
-              className="bg-red-50 text-red-600 border-red-200 hover:bg-red-100"
+              className="bg-red-50 text-red-600 border-red-200 hover:bg-red-100 rounded-lg"
               onClick={onStopTimer}
             >
               <Square className="h-4 w-4" />
@@ -90,7 +90,7 @@ const TimeTracker = ({ isTracking, onStartTimer, onStopTimer }: TimeTrackerProps
           </>
         ) : (
           <Button 
-            className="w-full sm:w-auto magnetic-button"
+            className="w-full sm:w-auto magnetic-button rounded-lg"
             onClick={onStartTimer}
           >
             <Play className="mr-2 h-4 w-4" />

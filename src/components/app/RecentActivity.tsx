@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Clock, CheckCircle2, MessageSquare, FileEdit } from "lucide-react";
+import { ShapesDots } from "@/components/ui/shapes";
 
 const RecentActivity = () => {
   const activities = [
@@ -60,45 +61,48 @@ const RecentActivity = () => {
   ];
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Recent Activity</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {activities.map((activity) => (
-            <div key={activity.id} className="flex gap-3">
-              <Avatar className="h-8 w-8">
-                {activity.user.avatar ? (
-                  <AvatarImage src={activity.user.avatar} />
-                ) : null}
-                <AvatarFallback className="bg-magnetic-100 text-magnetic-700">
-                  {activity.user.initials}
-                </AvatarFallback>
-              </Avatar>
-              
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-sm">
-                  <span className="font-medium">{activity.user.name}</span>
-                  <span className="text-muted-foreground">{activity.action}</span>
-                </div>
+    <Card className="pastel-card overflow-hidden">
+      <div className="relative">
+        <ShapesDots className="h-full" />
+        <CardHeader className="pb-2 relative z-10">
+          <CardTitle className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-pastel-blush to-pastel-pink">Recent Activity</CardTitle>
+        </CardHeader>
+        <CardContent className="relative z-10">
+          <div className="space-y-4">
+            {activities.map((activity) => (
+              <div key={activity.id} className="flex gap-3 p-2 rounded-lg hover:bg-pastel-pink/5 transition-colors">
+                <Avatar className="h-8 w-8 border-2 border-pastel-pink/30">
+                  {activity.user.avatar ? (
+                    <AvatarImage src={activity.user.avatar} />
+                  ) : null}
+                  <AvatarFallback className="bg-pastel-pink/20 text-pastel-blush">
+                    {activity.user.initials}
+                  </AvatarFallback>
+                </Avatar>
                 
-                <div className="flex items-center gap-1">
-                  {activity.icon}
-                  <p className="text-sm font-medium">
-                    {activity.subject}{" "}
-                    <span className="text-muted-foreground font-normal">
-                      in {activity.project}
-                    </span>
-                  </p>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1 text-sm">
+                    <span className="font-medium">{activity.user.name}</span>
+                    <span className="text-muted-foreground">{activity.action}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-1">
+                    {activity.icon}
+                    <p className="text-sm font-medium">
+                      {activity.subject}{" "}
+                      <span className="text-muted-foreground font-normal">
+                        in {activity.project}
+                      </span>
+                    </p>
+                  </div>
+                  
+                  <p className="text-xs text-muted-foreground">{activity.time}</p>
                 </div>
-                
-                <p className="text-xs text-muted-foreground">{activity.time}</p>
               </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
+            ))}
+          </div>
+        </CardContent>
+      </div>
     </Card>
   );
 };
