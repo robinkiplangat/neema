@@ -37,12 +37,95 @@ const Index = () => {
               </div>
             </div>
             <div className="flex-1 animate-slide-up" style={{animationDelay: '0.6s'}}>
-              <div className="relative rounded-xl overflow-hidden shadow-md border border-border/40 bg-white">
-                <img 
-                  src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=1024" 
-                  alt="Agency KPI Dashboard" 
-                  className="rounded-xl w-full"
-                />
+              <div className="relative rounded-xl overflow-hidden shadow-xl border border-primary/20 bg-white">
+                <svg 
+                  viewBox="0 0 800 500" 
+                  className="w-full h-full"
+                  style={{ background: 'linear-gradient(to bottom right, #f8f9fa, #ffffff)' }}
+                >
+                  {/* Dashboard Header */}
+                  <rect x="40" y="30" width="720" height="60" rx="8" fill="#f5f5f7" />
+                  <text x="60" y="65" fontSize="18" fontWeight="600" fill="#333">Agency Performance Dashboard</text>
+                  
+                  {/* KPI Cards */}
+                  <rect x="40" y="110" width="170" height="100" rx="8" fill="hsl(350, 40%, 70%)" />
+                  <text x="60" y="140" fontSize="14" fontWeight="600" fill="#fff">Utilization Rate</text>
+                  <text x="60" y="180" fontSize="28" fontWeight="700" fill="#fff">87%</text>
+                  <circle cx="150" cy="160" r="25" fill="rgba(255,255,255,0.2)" />
+                  <path d="M140,165 L150,155 L160,165" stroke="#fff" strokeWidth="2" fill="none" />
+
+                  <rect x="230" y="110" width="170" height="100" rx="8" fill="hsl(350, 30%, 60%)" />
+                  <text x="250" y="140" fontSize="14" fontWeight="600" fill="#fff">Productivity</text>
+                  <text x="250" y="180" fontSize="28" fontWeight="700" fill="#fff">92%</text>
+                  <circle cx="340" cy="160" r="25" fill="rgba(255,255,255,0.2)" />
+                  <path d="M330,160 L340,150 L350,160 L360,150" stroke="#fff" strokeWidth="2" fill="none" />
+
+                  <rect x="420" y="110" width="170" height="100" rx="8" fill="hsl(350, 20%, 50%)" />
+                  <text x="440" y="140" fontSize="14" fontWeight="600" fill="#fff">Team Capacity</text>
+                  <text x="440" y="180" fontSize="28" fontWeight="700" fill="#fff">76%</text>
+                  <circle cx="530" cy="160" r="25" fill="rgba(255,255,255,0.2)" />
+                  <path d="M520,170 L530,160 L540,170" stroke="#fff" strokeWidth="2" fill="none" />
+                  
+                  <rect x="610" y="110" width="150" height="100" rx="8" fill="hsl(350, 25%, 55%)" />
+                  <text x="630" y="140" fontSize="14" fontWeight="600" fill="#fff">Revenue</text>
+                  <text x="630" y="180" fontSize="28" fontWeight="700" fill="#fff">$143K</text>
+                  <circle cx="710" cy="160" r="25" fill="rgba(255,255,255,0.2)" />
+                  <path d="M700,170 L710,155 L720,163 L730,150" stroke="#fff" strokeWidth="2" fill="none" />
+
+                  {/* Kanban Board */}
+                  <rect x="40" y="230" width="720" height="240" rx="8" fill="#f5f5f7" />
+                  <text x="60" y="260" fontSize="16" fontWeight="600" fill="#333">Project Kanban</text>
+                  
+                  {/* Kanban Columns */}
+                  <rect x="60" y="280" width="160" height="170" rx="6" fill="#ffffff" stroke="#e0e0e0" strokeWidth="1" />
+                  <rect x="60" y="280" width="160" height="30" rx="6" fill="hsl(350, 40%, 90%)" />
+                  <text x="110" y="300" fontSize="14" fontWeight="600" fill="#333">To Do</text>
+                  
+                  <rect x="240" y="280" width="160" height="170" rx="6" fill="#ffffff" stroke="#e0e0e0" strokeWidth="1" />
+                  <rect x="240" y="280" width="160" height="30" rx="6" fill="hsl(350, 30%, 85%)" />
+                  <text x="290" y="300" fontSize="14" fontWeight="600" fill="#333">In Progress</text>
+                  
+                  <rect x="420" y="280" width="160" height="170" rx="6" fill="#ffffff" stroke="#e0e0e0" strokeWidth="1" />
+                  <rect x="420" y="280" width="160" height="30" rx="6" fill="hsl(350, 20%, 80%)" />
+                  <text x="470" y="300" fontSize="14" fontWeight="600" fill="#333">Review</text>
+                  
+                  <rect x="600" y="280" width="160" height="170" rx="6" fill="#ffffff" stroke="#e0e0e0" strokeWidth="1" />
+                  <rect x="600" y="280" width="160" height="30" rx="6" fill="hsl(350, 10%, 75%)" />
+                  <text x="650" y="300" fontSize="14" fontWeight="600" fill="#333">Completed</text>
+                  
+                  {/* Kanban Cards */}
+                  {/* To Do Column Cards */}
+                  <rect x="70" y="320" width="140" height="35" rx="4" fill="white" stroke="#e0e0e0" strokeWidth="1" />
+                  <text x="80" y="340" fontSize="12" fill="#555">Brand Strategy</text>
+                  <rect x="180" y="330" width="20" height="6" rx="3" fill="hsl(350, 40%, 70%)" />
+
+                  <rect x="70" y="365" width="140" height="35" rx="4" fill="white" stroke="#e0e0e0" strokeWidth="1" />
+                  <text x="80" y="385" fontSize="12" fill="#555">Social Media Plan</text>
+                  <rect x="180" y="375" width="20" height="6" rx="3" fill="hsl(350, 30%, 60%)" />
+                  
+                  {/* In Progress Column Cards */}
+                  <rect x="250" y="320" width="140" height="35" rx="4" fill="white" stroke="#e0e0e0" strokeWidth="1" />
+                  <text x="260" y="340" fontSize="12" fill="#555">Website Redesign</text>
+                  <rect x="360" y="330" width="20" height="6" rx="3" fill="hsl(350, 40%, 70%)" />
+                  
+                  <rect x="250" y="365" width="140" height="35" rx="4" fill="white" stroke="#e0e0e0" strokeWidth="1" />
+                  <text x="260" y="385" fontSize="12" fill="#555">SEO Optimization</text>
+                  <rect x="360" y="375" width="20" height="6" rx="3" fill="hsl(350, 20%, 50%)" />
+                  
+                  {/* Review Column Cards */}
+                  <rect x="430" y="320" width="140" height="35" rx="4" fill="white" stroke="#e0e0e0" strokeWidth="1" />
+                  <text x="440" y="340" fontSize="12" fill="#555">Q4 Campaign</text>
+                  <rect x="540" y="330" width="20" height="6" rx="3" fill="hsl(350, 25%, 55%)" />
+                  
+                  {/* Completed Column Cards */}
+                  <rect x="610" y="320" width="140" height="35" rx="4" fill="white" stroke="#e0e0e0" strokeWidth="1" />
+                  <text x="620" y="340" fontSize="12" fill="#555">Brand Guidelines</text>
+                  <rect x="720" y="330" width="20" height="6" rx="3" fill="hsl(350, 10%, 75%)" />
+                  
+                  <rect x="610" y="365" width="140" height="35" rx="4" fill="white" stroke="#e0e0e0" strokeWidth="1" />
+                  <text x="620" y="385" fontSize="12" fill="#555">Content Strategy</text>
+                  <rect x="720" y="375" width="20" height="6" rx="3" fill="hsl(350, 20%, 50%)" />
+                </svg>
               </div>
             </div>
           </div>
@@ -97,7 +180,7 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-20 bg-white">
         <div className="section-container text-center">
-          <div className="max-w-3xl mx-auto px-6 py-12 rounded-xl bg-primary bg-opacity-10 border border-primary/20">
+          <div className="max-w-3xl mx-auto px-6 py-12 rounded-xl bg-primary/10 border border-primary/20">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Ready to boost your productivity?</h2>
             <p className="text-xl max-w-2xl mx-auto mb-8 text-muted-foreground">
               Join thousands of teams that use Magnetic to streamline their workflows.
