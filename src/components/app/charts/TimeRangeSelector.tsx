@@ -12,7 +12,7 @@ const TimeRangeSelector = ({ timeRange, onTimeRangeChange }: TimeRangeSelectorPr
       value={timeRange} 
       onValueChange={onTimeRangeChange}
     >
-      <SelectTrigger className="w-[120px] h-8">
+      <SelectTrigger className="w-[120px] h-8 text-xs">
         <SelectValue placeholder="Time Range" />
       </SelectTrigger>
       <SelectContent>

@@ -30,9 +30,9 @@ const ProductivityChart = () => {
 
   return (
     <Card className="border-none shadow-sm bg-white/80">
-      <CardHeader className="pb-2 flex flex-row justify-between items-center">
+      <CardHeader className="pb-2 flex flex-row justify-between items-center space-x-4 flex-wrap gap-2">
         <CardTitle className="text-lg font-medium">Productivity Overview</CardTitle>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-3">
           <ChartTypeToggle 
             chartType={chartType} 
             onChartTypeChange={setChartType} 
@@ -44,7 +44,7 @@ const ProductivityChart = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="h-80">
+        <div className="h-[400px]">
           <ChartContainer
             config={{
               billable: { color: "#D4F5E9" },
