@@ -7,7 +7,7 @@ import TimeTracker from "@/components/app/TimeTracker";
 import ProjectOverview from "@/components/app/ProjectOverview";
 import { useToast } from "@/hooks/use-toast";
 import PageTitle from "@/components/shared/PageTitle";
-import { ShapesBlob } from "@/components/ui/shapes";
+import { ShapesBlob, ShapesDecoration } from "@/components/ui/shapes";
 
 const Dashboard = () => {
   const [isTracking, setIsTracking] = useState(false);
@@ -33,9 +33,8 @@ const Dashboard = () => {
     <AppLayout>
       <PageTitle title="Dashboard | Magnetic" />
       
-      <div className="relative">
-        <ShapesBlob color="pastel-pink" className="left-0 top-20" />
-        <ShapesBlob color="pastel-lavender" className="right-0 bottom-40" />
+      <div className="relative overflow-hidden">
+        <ShapesDecoration />
         
         <div className="space-y-8 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
