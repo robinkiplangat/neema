@@ -1,4 +1,7 @@
 
+// While we're not removing this file since it might be used elsewhere,
+// we're just not using any of the shape components on the Index page anymore
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 

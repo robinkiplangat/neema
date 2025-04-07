@@ -121,8 +121,4 @@
     @apply bg-white border border-border rounded-lg shadow-sm
     hover:shadow-md transition-all duration-300;
   }
-  
-  .pattern-bg {
-    @apply bg-gradient-dots bg-[length:20px_20px];
-  }
 }
