@@ -6,7 +6,7 @@ import OverviewStats from "@/components/app/OverviewStats";
 import RecentActivity from "@/components/app/RecentActivity";
 import TimeTracker from "@/components/app/TimeTracker";
 import ProjectOverview from "@/components/app/ProjectOverview";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const [isTracking, setIsTracking] = useState(false);
