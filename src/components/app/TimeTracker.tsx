@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Square, Clock } from "lucide-react";
 import {
@@ -21,7 +21,7 @@ const TimeTracker = ({ isTracking, onStartTimer, onStopTimer }: TimeTrackerProps
   const [task, setTask] = useState("updates");
   const [elapsedTime, setElapsedTime] = useState("00:00:00");
   
-  useState(() => {
+  useEffect(() => {
     let interval: NodeJS.Timeout;
     
     if (isTracking) {
@@ -41,7 +41,7 @@ const TimeTracker = ({ isTracking, onStartTimer, onStopTimer }: TimeTrackerProps
     }
     
     return () => clearInterval(interval);
-  });
+  }, [isTracking]);
 
   return (
     <div className="w-full md:w-auto bg-white rounded-xl border shadow-sm p-3 flex flex-col sm:flex-row items-center gap-3 hover:shadow-md transition-all duration-300">

@@ -5,6 +5,7 @@ import OverviewStats from "@/components/app/OverviewStats";
 import RecentActivity from "@/components/app/RecentActivity";
 import TimeTracker from "@/components/app/TimeTracker";
 import ProjectOverview from "@/components/app/ProjectOverview";
+import ProductivityChart from "@/components/app/ProductivityChart";
 import { useToast } from "@/hooks/use-toast";
 import PageTitle from "@/components/shared/PageTitle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -70,14 +71,23 @@ const Dashboard = () => {
           </TabsContent>
           
           <TabsContent value="my-work">
-            <div className="h-96 flex items-center justify-center rounded-lg border border-dashed">
-              <p className="text-muted-foreground">My Work content goes here</p>
+            <div className="space-y-6">
+              <ProjectOverview />
+              <ProductivityChart />
             </div>
           </TabsContent>
           
           <TabsContent value="productivity">
-            <div className="h-96 flex items-center justify-center rounded-lg border border-dashed">
-              <p className="text-muted-foreground">Productivity content goes here</p>
+            <div className="space-y-6">
+              <ProductivityChart />
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                  <ProjectOverview />
+                </div>
+                <div>
+                  <RecentActivity />
+                </div>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
