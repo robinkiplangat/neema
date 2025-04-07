@@ -1,11 +1,11 @@
 
 import { useState } from "react";
-import { Helmet } from "react-helmet";
 import AppLayout from "@/components/app/AppLayout";
 import TimesheetTable from "@/components/app/TimesheetTable";
 import TimesheetHeader from "@/components/app/TimesheetHeader";
 import TimesheetSummary from "@/components/app/TimesheetSummary";
 import { useToast } from "@/hooks/use-toast";
+import PageTitle from "@/components/shared/PageTitle";
 
 // Sample data
 const initialEntries = [
@@ -107,9 +107,7 @@ const Timesheet = () => {
 
   return (
     <AppLayout>
-      <Helmet>
-        <title>Timesheet | Magnetic</title>
-      </Helmet>
+      <PageTitle title="Timesheet | Magnetic" />
       
       <div className="space-y-6">
         <TimesheetHeader 

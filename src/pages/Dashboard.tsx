@@ -1,12 +1,12 @@
 
 import { useState } from "react";
-import { Helmet } from "react-helmet";
 import AppLayout from "@/components/app/AppLayout";
 import OverviewStats from "@/components/app/OverviewStats";
 import RecentActivity from "@/components/app/RecentActivity";
 import TimeTracker from "@/components/app/TimeTracker";
 import ProjectOverview from "@/components/app/ProjectOverview";
 import { useToast } from "@/hooks/use-toast";
+import PageTitle from "@/components/shared/PageTitle";
 
 const Dashboard = () => {
   const [isTracking, setIsTracking] = useState(false);
@@ -30,9 +30,7 @@ const Dashboard = () => {
 
   return (
     <AppLayout>
-      <Helmet>
-        <title>Dashboard | Magnetic</title>
-      </Helmet>
+      <PageTitle title="Dashboard | Magnetic" />
       
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

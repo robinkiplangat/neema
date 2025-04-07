@@ -1,10 +1,10 @@
 
 import { useState } from "react";
-import { Helmet } from "react-helmet";
 import AppLayout from "@/components/app/AppLayout";
 import KanbanColumn from "@/components/app/KanbanColumn";
 import KanbanHeader from "@/components/app/KanbanHeader";
 import { useToast } from "@/hooks/use-toast";
+import PageTitle from "@/components/shared/PageTitle";
 
 // Sample data
 const initialTasks = {
@@ -151,9 +151,7 @@ const KanbanBoard = () => {
 
   return (
     <AppLayout>
-      <Helmet>
-        <title>Kanban Board | Magnetic</title>
-      </Helmet>
+      <PageTitle title="Kanban Board | Magnetic" />
       
       <div className="space-y-6">
         <KanbanHeader 
