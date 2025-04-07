@@ -13,7 +13,7 @@ const ProductivityTabContent = () => {
       unit: "hours",
       progress: 78,
       change: "+12%",
-      trend: "up" 
+      trend: "up" as "up" 
     },
     { 
       title: "Utilization Rate", 
@@ -22,7 +22,7 @@ const ProductivityTabContent = () => {
       unit: "%",
       progress: 96,
       change: "+5%",
-      trend: "up" 
+      trend: "up" as "up" 
     },
     { 
       title: "On-time Delivery", 
@@ -31,7 +31,7 @@ const ProductivityTabContent = () => {
       unit: "%",
       progress: 97,
       change: "-2%",
-      trend: "down" 
+      trend: "down" as "down" 
     },
     { 
       title: "Client Satisfaction", 
@@ -40,7 +40,7 @@ const ProductivityTabContent = () => {
       unit: "/5",
       progress: 96,
       change: "+0.2",
-      trend: "up" 
+      trend: "up" as "up" 
     }
   ];
 
