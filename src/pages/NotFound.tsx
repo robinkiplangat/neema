@@ -2,7 +2,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ShapesBlob, ShapesCircle, ShapesDots } from "@/components/ui/shapes";
 
 const NotFound = () => {
   const location = useLocation();
@@ -15,36 +14,33 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-magnetic-50 to-white relative overflow-hidden">
-      {/* Decorative elements */}
-      <ShapesBlob 
-        color="pastel-lavender" 
-        size="lg" 
-        className="left-[10%] top-[20%]" 
-      />
-      <ShapesBlob 
-        color="pastel-peach" 
-        size="md" 
-        className="right-[15%] bottom-[30%]" 
-      />
-      <ShapesCircle 
-        color="pastel-mint" 
-        variant="outline"
-        size="md" 
-        className="left-[20%] bottom-[20%] animate-float" 
-      />
-      <ShapesDots 
-        dotColor="rgba(255,182,193,0.15)" 
-        size={12} 
-        spacing={60} 
-      />
-      
-      <div className="text-center z-10 p-8 bg-white rounded-xl shadow-lg border border-pastel-pink/30 max-w-md">
-        <h1 className="text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pastel-blush to-pastel-pink">404</h1>
-        <p className="text-xl text-muted-foreground mb-6">Oops! Page not found</p>
-        <Button asChild className="magnetic-button">
-          <Link to="/">Return to Home</Link>
-        </Button>
+    <div className="min-h-screen flex items-center justify-center bg-white p-4">
+      <div className="text-center max-w-md">
+        <div className="mb-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 mb-4">
+            <span className="text-6xl font-light text-primary">4</span>
+          </div>
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 mb-4">
+            <span className="text-6xl font-light text-primary">0</span>
+          </div>
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 mb-4">
+            <span className="text-6xl font-light text-primary">4</span>
+          </div>
+        </div>
+        
+        <h1 className="text-2xl font-bold mb-2">Page not found</h1>
+        <p className="text-muted-foreground mb-8">
+          Sorry, we couldn't find the page you're looking for. It might have been removed or is temporarily unavailable.
+        </p>
+        
+        <div className="space-x-4">
+          <Button asChild variant="outline" size="lg">
+            <Link to="/">Back to home</Link>
+          </Button>
+          <Button asChild className="magnetic-button" size="lg">
+            <Link to="/dashboard">Go to Dashboard</Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

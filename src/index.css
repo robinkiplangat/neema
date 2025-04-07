@@ -7,83 +7,83 @@
 
 @layer base {
   :root {
-    --background: 350 30% 99%;
-    --foreground: 350 10% 15%;
+    --background: 0 0% 100%;
+    --foreground: 220 10% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 350 10% 15%;
+    --card-foreground: 220 10% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 350 10% 15%;
+    --popover-foreground: 220 10% 20%;
 
-    --primary: 338 83% 76%;
+    --primary: 220 70% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 340 20% 96%;
-    --secondary-foreground: 350 10% 15%;
+    --secondary: 220 20% 96%;
+    --secondary-foreground: 220 10% 20%;
 
-    --muted: 340 20% 96%;
-    --muted-foreground: 350 10% 45%;
+    --muted: 220 20% 96%;
+    --muted-foreground: 220 10% 45%;
 
-    --accent: 338 94% 72%;
+    --accent: 220 70% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 340 10% 92%;
-    --input: 340 10% 92%;
-    --ring: 338 83% 76%;
+    --border: 220 10% 92%;
+    --input: 220 10% 92%;
+    --ring: 220 70% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 338 30% 12%;
+    --sidebar-background: 223 70% 20%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 338 83% 76%;
+    --sidebar-primary: 220 70% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 338 94% 20%;
+    --sidebar-accent: 220 70% 30%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 338 94% 20%;
-    --sidebar-ring: 338 90% 60%;
+    --sidebar-border: 220 70% 30%;
+    --sidebar-ring: 220 70% 40%;
   }
 
   .dark {
-    --background: 350 10% 10%;
+    --background: 220 10% 10%;
     --foreground: 0 0% 95%;
 
-    --card: 350 10% 12%;
+    --card: 220 10% 12%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 350 10% 12%;
+    --popover: 220 10% 12%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 338 83% 68%;
+    --primary: 220 70% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 350 10% 22%;
+    --secondary: 220 10% 22%;
     --secondary-foreground: 0 0% 95%;
 
-    --muted: 350 10% 22%;
-    --muted-foreground: 350 10% 70%;
+    --muted: 220 10% 22%;
+    --muted-foreground: 220 10% 70%;
 
-    --accent: 338 94% 64%;
+    --accent: 220 70% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 350 10% 22%;
-    --input: 350 10% 22%;
-    --ring: 338 83% 68%;
+    --border: 220 10% 22%;
+    --input: 220 10% 22%;
+    --ring: 220 70% 50%;
 
-    --sidebar-background: 350 10% 8%;
+    --sidebar-background: 220 10% 8%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 338 83% 68%;
+    --sidebar-primary: 220 70% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 338 94% 30%;
+    --sidebar-accent: 220 70% 30%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 338 94% 15%;
-    --sidebar-ring: 338 90% 64%;
+    --sidebar-border: 220 70% 15%;
+    --sidebar-ring: 220 70% 50%;
   }
 }
 
@@ -93,31 +93,32 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Nunito', 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', sans-serif;
+    @apply font-medium tracking-tight;
   }
 }
 
 @layer components {
   .magnetic-gradient {
-    @apply bg-gradient-to-r from-pastel-blush to-pastel-pink;
+    @apply bg-gradient-to-r from-blue-500 to-blue-700;
   }
   
   .magnetic-button {
-    @apply px-6 py-3 rounded-xl font-medium transition-all duration-300
-    bg-gradient-to-r from-pastel-blush to-pastel-pink text-gray-800
-    hover:from-pastel-pink hover:to-pastel-blush
-    shadow-md hover:shadow-lg;
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-300
+    bg-primary text-primary-foreground
+    hover:bg-primary/90
+    shadow-sm hover:shadow-md;
   }
   
   .section-container {
-    @apply max-w-6xl mx-auto px-6 md:px-10;
+    @apply max-w-7xl mx-auto px-4 md:px-8;
   }
 
   .pastel-card {
-    @apply bg-white border border-pastel-pink/30 rounded-xl shadow-sm
+    @apply bg-white border border-border rounded-lg shadow-sm
     hover:shadow-md transition-all duration-300;
   }
   

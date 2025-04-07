@@ -2,33 +2,23 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LayoutDashboard } from "lucide-react";
-import { ShapesBlob, ShapesCircle } from "@/components/ui/shapes";
+import { Menu, X, LayoutDashboard, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
   return (
-    <header className="fixed w-full bg-background/90 backdrop-blur-md z-50 border-b">
-      <div className="relative overflow-hidden">
-        {/* Decorative elements */}
-        <ShapesBlob 
-          color="pastel-pink" 
-          size="md" 
-          className="left-[5%] top-[20%] opacity-10" 
-        />
-        <ShapesCircle 
-          color="pastel-mint" 
-          variant="outline"
-          size="sm" 
-          className="right-[10%] top-[40%] opacity-30 animate-float" 
-        />
-      </div>
-      
-      <div className="section-container py-4 flex items-center justify-between">
+    <header className="fixed w-full bg-background/95 backdrop-blur-md z-50 border-b">
+      <div className="section-container py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-md bg-magnetic-600 flex items-center justify-center">
+          <div className="h-8 w-8 rounded bg-primary flex items-center justify-center">
             <span className="text-white font-bold text-lg">M</span>
           </div>
           <span className="text-xl font-bold">Magnetic</span>
@@ -36,12 +26,26 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link 
-            to="/features" 
-            className="text-foreground/80 hover:text-foreground transition-colors"
-          >
-            Features
-          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-1 text-foreground/80 hover:text-foreground transition-colors">
+                Features 
+                <ChevronDown className="h-4 w-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-56">
+              <DropdownMenuItem asChild>
+                <Link to="/features/time-tracking">Time Tracking</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/features/project-management">Project Management</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/features/reporting">Reporting</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Link 
             to="/pricing" 
             className="text-foreground/80 hover:text-foreground transition-colors"
@@ -58,7 +62,7 @@ const Navbar = () => {
             to="/dashboard" 
             className={`flex items-center gap-1.5 ${
               location.pathname.includes("/dashboard") 
-                ? "text-pastel-pink font-medium" 
+                ? "text-primary font-medium" 
                 : "text-foreground/80 hover:text-foreground"
             } transition-colors`}
           >
@@ -120,7 +124,7 @@ const Navbar = () => {
               to="/dashboard" 
               className={`py-2 flex items-center gap-1.5 ${
                 location.pathname.includes("/dashboard") 
-                  ? "text-pastel-pink font-medium" 
+                  ? "text-primary font-medium" 
                   : "text-foreground/80 hover:text-foreground"
               }`}
               onClick={() => setIsMenuOpen(false)}

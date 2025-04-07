@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { ArrowLeft } from "lucide-react";
-import { ShapesBlob, ShapesCircle, ShapesDots } from "@/components/ui/shapes";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -41,31 +40,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-magnetic-50 to-white p-4 relative overflow-hidden">
-      {/* Decorative elements */}
-      <ShapesBlob 
-        color="pastel-blush" 
-        size="lg" 
-        className="right-[10%] top-[10%]" 
-      />
-      <ShapesBlob 
-        color="pastel-lavender" 
-        size="md" 
-        className="left-[15%] bottom-[20%]" 
-      />
-      <ShapesCircle 
-        color="pastel-mint" 
-        variant="outline"
-        size="sm" 
-        className="left-[25%] top-[30%] animate-float" 
-      />
-      <ShapesDots 
-        dotColor="rgba(255,182,193,0.15)" 
-        size={12} 
-        spacing={60} 
-      />
-      
-      <div className="w-full max-w-md relative z-10">
+    <div className="min-h-screen flex items-center justify-center bg-white p-4">
+      <div className="w-full max-w-md">
         <div className="mb-6">
           <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -73,15 +49,15 @@ const Login = () => {
           </Link>
         </div>
         
-        <div className="bg-white rounded-xl shadow-lg border border-pastel-pink/30 p-8">
+        <div className="bg-white rounded-xl shadow-sm border p-8">
           <div className="text-center mb-8">
             <Link to="/" className="inline-flex items-center gap-2 mb-6">
-              <div className="h-8 w-8 rounded-md bg-magnetic-600 flex items-center justify-center">
+              <div className="h-8 w-8 rounded bg-primary flex items-center justify-center">
                 <span className="text-white font-bold text-lg">M</span>
               </div>
               <span className="text-xl font-bold">Magnetic</span>
             </Link>
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pastel-blush to-pastel-pink">Welcome back</h1>
+            <h1 className="text-2xl font-bold">Welcome back</h1>
             <p className="text-muted-foreground mt-1">Sign in to your account</p>
           </div>
           
@@ -95,13 +71,14 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="h-11"
               />
             </div>
             
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Link to="/forgot-password" className="text-sm text-magnetic-600 hover:text-magnetic-700">
+                <Link to="/forgot-password" className="text-sm text-primary hover:text-primary/90">
                   Forgot password?
                 </Link>
               </div>
@@ -111,10 +88,11 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="h-11"
               />
             </div>
             
-            <Button type="submit" className="w-full magnetic-button" disabled={isLoading}>
+            <Button type="submit" className="w-full h-11" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
@@ -122,7 +100,7 @@ const Login = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link to="/signup" className="text-magnetic-600 hover:text-magnetic-700 font-medium">
+              <Link to="/signup" className="text-primary hover:text-primary/90 font-medium">
                 Sign up
               </Link>
             </p>
