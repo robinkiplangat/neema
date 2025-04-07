@@ -39,8 +39,8 @@ const Index = () => {
             <div className="flex-1 animate-slide-up" style={{animationDelay: '0.6s'}}>
               <div className="relative rounded-xl overflow-hidden shadow-md border border-border/40 bg-white">
                 <img 
-                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=1024" 
-                  alt="Magnetic Dashboard Preview" 
+                  src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=1024" 
+                  alt="Agency KPI Dashboard" 
                   className="rounded-xl w-full"
                 />
               </div>
@@ -97,7 +97,7 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-20 bg-white">
         <div className="section-container text-center">
-          <div className="max-w-3xl mx-auto px-6 py-12 rounded-xl bg-primary bg-opacity-5 border border-primary/10">
+          <div className="max-w-3xl mx-auto px-6 py-12 rounded-xl bg-primary bg-opacity-10 border border-primary/20">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Ready to boost your productivity?</h2>
             <p className="text-xl max-w-2xl mx-auto mb-8 text-muted-foreground">
               Join thousands of teams that use Magnetic to streamline their workflows.
