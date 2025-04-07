@@ -1,14 +1,31 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LayoutDashboard } from "lucide-react";
+import { ShapesBlob, ShapesCircle } from "@/components/ui/shapes";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <header className="fixed w-full bg-background/90 backdrop-blur-md z-50 border-b">
+      <div className="relative overflow-hidden">
+        {/* Decorative elements */}
+        <ShapesBlob 
+          color="pastel-pink" 
+          size="md" 
+          className="left-[5%] top-[20%] opacity-10" 
+        />
+        <ShapesCircle 
+          color="pastel-mint" 
+          variant="outline"
+          size="sm" 
+          className="right-[10%] top-[40%] opacity-30 animate-float" 
+        />
+      </div>
+      
       <div className="section-container py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-md bg-magnetic-600 flex items-center justify-center">
@@ -19,14 +36,34 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link to="/features" className="text-foreground/80 hover:text-foreground transition-colors">
+          <Link 
+            to="/features" 
+            className="text-foreground/80 hover:text-foreground transition-colors"
+          >
             Features
           </Link>
-          <Link to="/pricing" className="text-foreground/80 hover:text-foreground transition-colors">
+          <Link 
+            to="/pricing" 
+            className="text-foreground/80 hover:text-foreground transition-colors"
+          >
             Pricing
           </Link>
-          <Link to="/resources" className="text-foreground/80 hover:text-foreground transition-colors">
+          <Link 
+            to="/resources" 
+            className="text-foreground/80 hover:text-foreground transition-colors"
+          >
             Resources
+          </Link>
+          <Link 
+            to="/dashboard" 
+            className={`flex items-center gap-1.5 ${
+              location.pathname.includes("/dashboard") 
+                ? "text-pastel-pink font-medium" 
+                : "text-foreground/80 hover:text-foreground"
+            } transition-colors`}
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
           </Link>
         </nav>
 
@@ -78,6 +115,18 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Resources
+            </Link>
+            <Link 
+              to="/dashboard" 
+              className={`py-2 flex items-center gap-1.5 ${
+                location.pathname.includes("/dashboard") 
+                  ? "text-pastel-pink font-medium" 
+                  : "text-foreground/80 hover:text-foreground"
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
             </Link>
             <div className="flex flex-col gap-3 pt-2">
               <Button variant="outline" asChild className="w-full">
