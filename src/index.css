@@ -124,8 +124,4 @@
   .pattern-bg {
     @apply bg-gradient-dots bg-[length:20px_20px];
   }
-  
-  .shape-blob {
-    @apply absolute -z-10 blur-3xl opacity-20 rounded-full;
-  }
 }

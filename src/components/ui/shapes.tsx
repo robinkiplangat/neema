@@ -31,7 +31,7 @@ export function ShapesBlob({
   return (
     <div 
       className={cn(
-        'shape-blob animate-float absolute -z-10 blur-3xl opacity-20 rounded-full',
+        'absolute -z-10 blur-3xl opacity-20 rounded-full animate-float',
         blobColors[color],
         blobSizes[size],
         className
