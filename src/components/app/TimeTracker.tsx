@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Square, Clock } from "lucide-react";
@@ -90,7 +89,7 @@ const TimeTracker = ({ isTracking, onStartTimer, onStopTimer }: TimeTrackerProps
           </>
         ) : (
           <Button 
-            className="w-full sm:w-auto magnetic-button rounded-lg"
+            className="w-full sm:w-auto neema-button rounded-lg"
             onClick={onStartTimer}
           >
             <Play className="mr-2 h-4 w-4" />

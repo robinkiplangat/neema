@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import AppLayout from "@/components/app/AppLayout";
 import KanbanColumn from "@/components/app/KanbanColumn";
@@ -151,7 +150,7 @@ const KanbanBoard = () => {
 
   return (
     <AppLayout>
-      <PageTitle title="Kanban Board | Magnetic" />
+      <PageTitle title="Kanban Board | Neema" />
       
       <div className="space-y-6">
         <KanbanHeader 

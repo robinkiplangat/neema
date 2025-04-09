@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, BarChart3 } from "lucide-react";
 
@@ -77,7 +76,7 @@ const TimesheetSummary = ({ entries }: TimesheetSummaryProps) => {
     <Card>
       <CardHeader className="pb-2">
         <CardTitle className="text-lg flex items-center gap-2">
-          <Clock className="h-5 w-5 text-magnetic-500" />
+          <Clock className="h-5 w-5 text-neema-500" />
           Time Summary
         </CardTitle>
       </CardHeader>
@@ -90,7 +89,7 @@ const TimesheetSummary = ({ entries }: TimesheetSummaryProps) => {
           
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <BarChart3 className="h-4 w-4 text-magnetic-500" />
+              <BarChart3 className="h-4 w-4 text-neema-500" />
               <h3 className="font-medium">Hours by Project</h3>
             </div>
             

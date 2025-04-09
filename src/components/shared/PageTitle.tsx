@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 
 interface PageTitleProps {
@@ -12,7 +11,7 @@ const PageTitle = ({ title }: PageTitleProps) => {
     
     // Cleanup function to reset title when component unmounts
     return () => {
-      document.title = 'Magnetic';
+      document.title = 'Neema';
     };
   }, [title]);
 

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -116,7 +115,7 @@ const KanbanAddTask = ({ onAddTask, onCancel }: KanbanAddTaskProps) => {
             <Button 
               type="submit" 
               size="sm" 
-              className="magnetic-button"
+              className="neema-button"
             >
               <Check className="mr-1 h-4 w-4" />
               Add

@@ -1,12 +1,18 @@
+import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import PageTitle from "@/components/shared/PageTitle";
-import { WaitlistForm } from "@/components/authPages/WaitlistForm";
+import { Waitlist, SignedIn } from "@clerk/clerk-react";
 
 const JoinWaitlist = () => {
   return (
     <div className="min-h-screen bg-neema-background flex flex-col">
       <PageTitle title="Join the Neema Waitlist" />
+      
+      {/* Redirect if already logged in */}
+      <SignedIn>
+        <Navigate to="/dashboard" replace />
+      </SignedIn>
       
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
@@ -28,7 +34,7 @@ const JoinWaitlist = () => {
           </div>
           
           <div className="bg-white p-8 rounded-xl shadow-md border border-neema-secondary/20">
-            <WaitlistForm />
+            <Waitlist signInUrl="/login" />
           </div>
           
           <div className="mt-8 text-center">

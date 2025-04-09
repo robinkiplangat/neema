@@ -12,7 +12,7 @@ const NotFound = () => {
         <div className="flex justify-center mb-6">
           <div className="h-16 w-16 rounded-xl overflow-hidden">
             <img 
-              src="/lovable-uploads/52340e59-2c7c-4b31-a8fd-e4d2bb5a7758.png" 
+              src="/images/neema_icon.png"
               alt="Neema Logo" 
               className="h-full w-full object-cover"
             />
