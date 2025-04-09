@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +7,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import JoinWaitlist from "./pages/JoinWaitlist";
 import Dashboard from "./pages/Dashboard";
 import Timesheet from "./pages/Timesheet";
 import KanbanBoard from "./pages/KanbanBoard";
@@ -25,6 +25,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/joinwaitlist" element={<JoinWaitlist />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/timesheet" element={<Timesheet />} />
           <Route path="/kanban" element={<KanbanBoard />} />

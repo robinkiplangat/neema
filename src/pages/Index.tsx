@@ -42,6 +42,11 @@ const Index = () => {
                       Log in
                     </Link>
                   </Button>
+                  <Button asChild size="lg" variant="ghost" className="text-neema-text hover:bg-neema-secondary/10">
+                    <Link to="/joinwaitlist">
+                      Join waitlist
+                    </Link>
+                  </Button>
                 </SignedOut>
                 <SignedIn>
                   <Button asChild size="lg" className="neema-button">
@@ -186,6 +191,11 @@ const Index = () => {
               <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
                 <Link to="/demo">
                   See Neema in action
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="ghost" className="text-white hover:bg-white/10">
+                <Link to="/joinwaitlist">
+                  Join waitlist
                 </Link>
               </Button>
             </SignedOut>

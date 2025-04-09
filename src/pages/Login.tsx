@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import PageTitle from "@/components/shared/PageTitle";
 import { SignedIn } from "@clerk/clerk-react";
 import { SignInForm } from "@/components/authPages/SignInForm";
@@ -33,6 +33,21 @@ const Login = () => {
           
           <div className="bg-white p-8 rounded-xl shadow-md border border-neema-secondary/20">
             <SignInForm />
+            
+            <div className="mt-6 pt-6 border-t border-neema-secondary/20 text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-neema-primary" />
+                <p className="text-sm font-medium">Don't have an account yet?</p>
+              </div>
+              <p className="text-sm text-muted-foreground mb-3">
+                We're not onboarding new users right now, but you can join our waitlist to be first in line when we launch!
+              </p>
+              <Link to="/joinwaitlist">
+                <button className="text-sm text-neema-primary hover:underline font-medium">
+                  Join the waitlist →
+                </button>
+              </Link>
+            </div>
           </div>
           
           <div className="mt-8 text-center">

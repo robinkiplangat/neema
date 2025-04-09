@@ -88,6 +88,11 @@ const Navbar = () => {
                 Start for free
               </Button>
             </SignUpButton>
+            <Link to="/joinwaitlist">
+              <Button variant="ghost" className="text-neema-text hover:bg-neema-secondary/10">
+                Join waitlist
+              </Button>
+            </Link>
           </SignedOut>
           <SignedIn>
             <Link to="/dashboard">
@@ -166,6 +171,11 @@ const Navbar = () => {
                     Start for free
                   </Button>
                 </SignUpButton>
+                <Link to="/joinwaitlist" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="ghost" className="text-neema-text hover:bg-neema-secondary/10 w-full">
+                    Join waitlist
+                  </Button>
+                </Link>
               </SignedOut>
               <SignedIn>
                 <div className="flex items-center justify-between">
