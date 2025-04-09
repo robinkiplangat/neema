@@ -10,7 +10,7 @@ const DashboardTabs = () => {
       <TabsList className="bg-background border mb-2">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="my-work">My Work</TabsTrigger>
-        <TabsTrigger value="productivity">Productivity</TabsTrigger>
+        <TabsTrigger value="productivity">Insights</TabsTrigger>
       </TabsList>
       
       <TabsContent value="overview" className="space-y-6">

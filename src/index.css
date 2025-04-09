@@ -103,4 +103,22 @@
     @apply bg-white/80 border border-border rounded-xl shadow-sm
     hover:shadow-md transition-all duration-300;
   }
+  
+  .ai-suggestion {
+    @apply bg-accent/10 border-l-4 border-accent p-3 rounded-r-md text-sm italic;
+  }
+  
+  .integration-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary/40 text-secondary-foreground;
+  }
+  
+  .insight-card {
+    @apply bg-white/90 p-4 rounded-xl border border-neema-secondary/20 relative overflow-hidden;
+  }
+  
+  .insight-card::before {
+    content: "";
+    @apply absolute top-0 left-0 w-1 h-full bg-neema-primary;
+  }
 }
+
