@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -66,7 +65,7 @@ const KanbanTask = ({ task }: KanbanTaskProps) => {
         </Badge>
         
         <Avatar className="h-6 w-6">
-          <AvatarFallback className="text-xs bg-magnetic-100 text-magnetic-700">
+          <AvatarFallback className="text-xs bg-neema-100 text-neema-700">
             {getInitials(task.assignee)}
           </AvatarFallback>
         </Avatar>

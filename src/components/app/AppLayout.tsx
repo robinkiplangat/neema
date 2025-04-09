@@ -1,4 +1,3 @@
-
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -61,9 +60,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           <div className="flex items-center justify-between px-5 py-4 border-b">
             <Link to="/dashboard" className="flex items-center gap-2">
               <div className="h-8 w-8 rounded bg-pastel-lightpink flex items-center justify-center">
-                <span className="text-pastel-pink font-bold text-lg">M</span>
+                <img
+                  src="/images/neema_icon.png"
+                  alt="Neema Logo"
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <span className="text-xl font-bold">Magnetic</span>
+              <span className="text-xl font-bold">Neema</span>
             </Link>
             {isMobile && (
               <Button variant="ghost" size="icon" onClick={toggleSidebar}>
@@ -156,7 +159,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               <div className="h-7 w-7 rounded bg-pastel-lightpink flex items-center justify-center">
                 <span className="text-pastel-pink font-bold text-sm">M</span>
               </div>
-              <span className="text-lg font-bold">Magnetic</span>
+              <span className="text-lg font-bold">Neema</span>
             </Link>
             
             <Avatar className="h-8 w-8">

@@ -1,4 +1,3 @@
-
 import TimeTracker from "../TimeTracker";
 
 interface DashboardHeaderProps {
@@ -11,9 +10,9 @@ const DashboardHeader = ({ isTracking, onStartTimer, onStopTimer }: DashboardHea
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Good morning, Alex</h1>
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Good morning, Robin</h1>
         <p className="text-muted-foreground mt-1">
-          Here's an overview of your workspace today
+          robin@neema.ai • Here's an overview of your workspace today
         </p>
       </div>
       

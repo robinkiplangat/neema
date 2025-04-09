@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import AppLayout from "@/components/app/AppLayout";
 import TimesheetTable from "@/components/app/TimesheetTable";
@@ -107,7 +106,7 @@ const Timesheet = () => {
 
   return (
     <AppLayout>
-      <PageTitle title="Timesheet | Magnetic" />
+      <PageTitle title="Timesheet | Neema" />
       
       <div className="space-y-6">
         <TimesheetHeader 

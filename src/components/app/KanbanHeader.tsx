@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { 
   Select,
@@ -43,7 +42,7 @@ const KanbanHeader = ({ selectedProject, onProjectChange }: KanbanHeaderProps) =
           <Button variant="outline" size="icon">
             <SlidersHorizontal className="h-4 w-4" />
           </Button>
-          <Button className="magnetic-button">
+          <Button className="neema-button">
             <Plus className="mr-2 h-4 w-4" />
             Add Task
           </Button>

@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,18 +62,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				magnetic: {
-					50: '#ffeef2',
-					100: '#ffdade',
-					200: '#ffb6c1',
-					300: '#ff8fa3',
-					400: '#ff6785',
-					500: '#ff3f67',
-					600: '#ec174c',
-					700: '#d10940',
-					800: '#ad0736',
-					900: '#8a052b',
-					950: '#4c0016',
+				neema: {
+					50: '#f5f3ff',
+					100: '#ede9fe',
+					200: '#ddd6fe',
+					300: '#c4b5fd',
+					400: '#a78bfa',
+					500: '#8b5cf6',
+					600: '#7c3aed',
+					700: '#6d28d9',
+					800: '#5b21b6',
+					900: '#4c1d95',
+					950: '#2e1065',
 				},
 				blue: {
 					50: '#edf5ff',

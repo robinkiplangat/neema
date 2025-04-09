@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -71,7 +70,7 @@ const TimesheetTable = ({ entries, onAddEntry, onDeleteEntry }: TimesheetTablePr
           <Button 
             variant="outline" 
             onClick={() => setIsAddingEntry(true)}
-            className="text-magnetic-600 border-magnetic-200 hover:bg-magnetic-50"
+            className="text-neema-600 border-neema-200 hover:bg-neema-50"
           >
             <Plus className="mr-2 h-4 w-4" />
             Add Entry
