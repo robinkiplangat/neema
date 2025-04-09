@@ -25,13 +25,24 @@ export const SignUpForm = () => {
 
     try {
       if (!showVerification) {
-        // Initial sign up
+        // Initial sign up - Try a more compatible approach with the Clerk API
         const result = await signUp.create({
           emailAddress: email,
           password,
-          first_name: firstName,
-          last_name: lastName,
         });
+
+        // Set name separately to avoid parameter issues
+        if (firstName) {
+          await signUp.update({
+            firstName,
+          });
+        }
+        
+        if (lastName) {
+          await signUp.update({
+            lastName,
+          });
+        }
 
         // If there are missing fields or CAPTCHA requirement, it will throw an error above
         // Start email verification

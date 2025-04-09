@@ -83,14 +83,9 @@ const Navbar = () => {
                 Log in
               </Button>
             </Link>
-            <Link to="/signup">
-              <Button className="neema-button">
-                Start for free
-              </Button>
-            </Link>
             <Link to="/joinwaitlist">
-              <Button variant="ghost" className="text-neema-text hover:bg-neema-secondary/10">
-                Join waitlist
+              <Button className="neema-button">
+                Start for Free
               </Button>
             </Link>
           </SignedOut>
@@ -166,14 +161,9 @@ const Navbar = () => {
                     Log in
                   </Button>
                 </Link>
-                <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="neema-button w-full">
-                    Start for free
-                  </Button>
-                </Link>
                 <Link to="/joinwaitlist" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="ghost" className="text-neema-text hover:bg-neema-secondary/10 w-full">
-                    Join waitlist
+                  <Button className="neema-button w-full">
+                    Start for Free
                   </Button>
                 </Link>
               </SignedOut>

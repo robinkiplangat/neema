@@ -50,10 +50,10 @@ const App = () => {
           }
         }}
         signInUrl="/login"
-        signUpUrl="/signup"
+        signUpUrl="/joinwaitlist"
         waitlistUrl="/joinwaitlist"
         afterSignInUrl="/dashboard"
-        afterSignUpUrl="/dashboard"
+        afterSignUpUrl="/joinwaitlist"
       >
         <TooltipProvider>
           <Toaster />

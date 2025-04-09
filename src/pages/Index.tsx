@@ -32,19 +32,14 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-slide-up" style={{animationDelay: '0.8s'}}>
                 <SignedOut>
                   <Button asChild size="lg" className="neema-button">
-                    <Link to="/signup">
-                      Start for free
+                    <Link to="/joinwaitlist">
+                      Start for Free
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10">
                     <Link to="/login">
                       Log in
-                    </Link>
-                  </Button>
-                  <Button asChild size="lg" variant="ghost" className="text-neema-text hover:bg-neema-secondary/10">
-                    <Link to="/joinwaitlist">
-                      Join waitlist
                     </Link>
                   </Button>
                 </SignedOut>
@@ -184,18 +179,13 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <SignedOut>
               <Button asChild size="lg" className="bg-white text-neema-primary hover:bg-white/90">
-                <Link to="/signup">
-                  Start for free
+                <Link to="/joinwaitlist">
+                  Start for Free
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                <Link to="/demo">
-                  See Neema in action
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="ghost" className="text-white hover:bg-white/10">
-                <Link to="/joinwaitlist">
-                  Join waitlist
+                <Link to="/login">
+                  Log in
                 </Link>
               </Button>
             </SignedOut>
