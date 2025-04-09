@@ -1,10 +1,9 @@
-
 import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import PageTitle from "@/components/shared/PageTitle";
-import { SignIn, SignedIn } from "@clerk/clerk-react";
+import { SignedIn } from "@clerk/clerk-react";
+import { SignInForm } from "@/components/authPages/SignInForm";
 
 const Login = () => {
   return (
@@ -22,7 +21,7 @@ const Login = () => {
             <Link to="/" className="inline-flex items-center gap-2 mb-8">
               <div className="h-10 w-10 rounded-xl overflow-hidden">
                 <img 
-                  src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
+                  src="/images/neema_icon.png" 
                   alt="Neema Logo" 
                   className="h-full w-full object-cover"
                 />
@@ -33,19 +32,22 @@ const Login = () => {
           </div>
           
           <div className="bg-white p-8 rounded-xl shadow-md border border-neema-secondary/20">
-            <SignIn
-              appearance={{
-                elements: {
-                  formButtonPrimary: "neema-button py-2",
-                  footerAction: "text-neema-accent hover:underline",
-                  card: "shadow-none border-none p-0",
-                }
-              }}
-              routing="path"
-              path="/login"
-              signUpUrl="/signup"
-              redirectUrl="/dashboard"
-            />
+            <SignInForm />
+            
+            <div className="mt-6 pt-6 border-t border-neema-secondary/20 text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-neema-primary" />
+                <p className="text-sm font-medium">Don't have an account yet?</p>
+              </div>
+              <p className="text-sm text-muted-foreground mb-3">
+                We're not onboarding new users right now, but you can join our waitlist to be first in line when we launch!
+              </p>
+              <Link to="/joinwaitlist">
+                <button className="text-sm text-neema-primary hover:underline font-medium">
+                  Join the waitlist →
+                </button>
+              </Link>
+            </div>
           </div>
           
           <div className="mt-8 text-center">

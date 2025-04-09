@@ -1,19 +1,12 @@
-import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import PageTitle from "@/components/shared/PageTitle";
-import { SignedIn } from "@clerk/clerk-react";
-import { SignUpForm } from "@/components/authPages/SignUpForm";
+import { WaitlistForm } from "@/components/authPages/WaitlistForm";
 
-const Signup = () => {
+const JoinWaitlist = () => {
   return (
     <div className="min-h-screen bg-neema-background flex flex-col">
-      <PageTitle title="Sign up for Neema" />
-      
-      {/* Redirect if already logged in */}
-      <SignedIn>
-        <Navigate to="/dashboard" replace />
-      </SignedIn>
+      <PageTitle title="Join the Neema Waitlist" />
       
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
@@ -27,12 +20,15 @@ const Signup = () => {
                 />
               </div>
             </Link>
-            <h1 className="text-2xl md:text-3xl font-bold">Create your account</h1>
-            <p className="text-muted-foreground mt-2">Start your productivity journey with Neema</p>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Sparkles className="h-5 w-5 text-neema-primary" />
+              <h1 className="text-2xl md:text-3xl font-bold">Join the waitlist</h1>
+            </div>
+            <p className="text-muted-foreground mt-2">Be among the first to experience Neema when we launch</p>
           </div>
           
           <div className="bg-white p-8 rounded-xl shadow-md border border-neema-secondary/20">
-            <SignUpForm />
+            <WaitlistForm />
           </div>
           
           <div className="mt-8 text-center">
@@ -47,4 +43,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default JoinWaitlist; 

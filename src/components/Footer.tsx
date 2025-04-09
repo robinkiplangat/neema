@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -10,7 +9,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="h-8 w-8 rounded-xl overflow-hidden">
                 <img 
-                  src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
+                  src="/images/neema_icon.png" 
                   alt="Neema Logo" 
                   className="h-full w-full object-cover"
                 />
@@ -18,7 +17,8 @@ const Footer = () => {
               <span className="text-xl font-bold">Neema</span>
             </Link>
             <p className="text-muted-foreground mb-4 max-w-xs">
-              Track progress, manage tasks, and stay in flow — effortlessly. Built for founders, by founders.
+              Stay in flow — effortlessly. 
+              Built for founders, by founders.
             </p>
           </div>
           

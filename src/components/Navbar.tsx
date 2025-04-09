@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -21,7 +20,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2">
           <div className="h-10 w-10 rounded-xl overflow-hidden">
             <img 
-              src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
+              src="/images/neema_icon.png" 
               alt="Neema Logo" 
               className="h-full w-full object-cover"
             />
@@ -89,6 +88,11 @@ const Navbar = () => {
                 Start for free
               </Button>
             </SignUpButton>
+            <Link to="/joinwaitlist">
+              <Button variant="ghost" className="text-neema-text hover:bg-neema-secondary/10">
+                Join waitlist
+              </Button>
+            </Link>
           </SignedOut>
           <SignedIn>
             <Link to="/dashboard">
@@ -167,6 +171,11 @@ const Navbar = () => {
                     Start for free
                   </Button>
                 </SignUpButton>
+                <Link to="/joinwaitlist" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="ghost" className="text-neema-text hover:bg-neema-secondary/10 w-full">
+                    Join waitlist
+                  </Button>
+                </Link>
               </SignedOut>
               <SignedIn>
                 <div className="flex items-center justify-between">
