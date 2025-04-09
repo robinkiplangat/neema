@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LayoutDashboard, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,13 +15,17 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <header className="fixed w-full bg-background/95 backdrop-blur-md z-50 border-b">
+    <header className="fixed w-full bg-neema-background/95 backdrop-blur-md z-50 border-b border-neema-secondary/30">
       <div className="section-container py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded bg-primary flex items-center justify-center">
-            <span className="text-white font-bold text-lg">M</span>
+          <div className="h-10 w-10 rounded-xl overflow-hidden">
+            <img 
+              src="/lovable-uploads/52340e59-2c7c-4b31-a8fd-e4d2bb5a7758.png" 
+              alt="Neema Logo" 
+              className="h-full w-full object-cover"
+            />
           </div>
-          <span className="text-xl font-bold">Magnetic</span>
+          <span className="text-xl font-bold text-neema-text">Neema</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -35,13 +39,16 @@ const Navbar = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-56">
               <DropdownMenuItem asChild>
-                <Link to="/features/time-tracking">Time Tracking</Link>
+                <Link to="/features/task-management">Task Management</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/features/project-management">Project Management</Link>
+                <Link to="/features/smart-notes">Smart Notes</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/features/reporting">Reporting</Link>
+                <Link to="/features/communication">Communication</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/features/social-media">Social Media</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -60,24 +67,19 @@ const Navbar = () => {
           </Link>
           <Link 
             to="/dashboard" 
-            className={`flex items-center gap-1.5 ${
-              location.pathname.includes("/dashboard") 
-                ? "text-primary font-medium" 
-                : "text-foreground/80 hover:text-foreground"
-            } transition-colors`}
+            className={`text-foreground/80 hover:text-foreground transition-colors`}
           >
-            <LayoutDashboard className="h-4 w-4" />
             Dashboard
           </Link>
         </nav>
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="outline" asChild>
-            <Link to="/login">Login</Link>
+          <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10" asChild>
+            <Link to="/login">Log in</Link>
           </Button>
-          <Button className="magnetic-button" asChild>
-            <Link to="/signup">Sign Up</Link>
+          <Button className="neema-button" asChild>
+            <Link to="/signup">Start for free</Link>
           </Button>
         </div>
 
@@ -97,7 +99,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-background border-b">
+        <div className="md:hidden bg-neema-background border-b">
           <div className="section-container py-4 flex flex-col gap-4">
             <Link 
               to="/features" 
@@ -122,22 +124,17 @@ const Navbar = () => {
             </Link>
             <Link 
               to="/dashboard" 
-              className={`py-2 flex items-center gap-1.5 ${
-                location.pathname.includes("/dashboard") 
-                  ? "text-primary font-medium" 
-                  : "text-foreground/80 hover:text-foreground"
-              }`}
+              className="py-2 text-foreground/80 hover:text-foreground"
               onClick={() => setIsMenuOpen(false)}
             >
-              <LayoutDashboard className="h-4 w-4" />
               Dashboard
             </Link>
             <div className="flex flex-col gap-3 pt-2">
-              <Button variant="outline" asChild className="w-full">
-                <Link to="/login">Login</Link>
+              <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10 w-full" asChild>
+                <Link to="/login">Log in</Link>
               </Button>
-              <Button className="magnetic-button w-full" asChild>
-                <Link to="/signup">Sign Up</Link>
+              <Button className="neema-button w-full" asChild>
+                <Link to="/signup">Start for free</Link>
               </Button>
             </div>
           </div>

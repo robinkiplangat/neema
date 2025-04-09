@@ -1,46 +1,35 @@
 
-import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import PageTitle from "@/components/shared/PageTitle";
 
 const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4">
-      <div className="text-center max-w-md">
-        <div className="mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 mb-4">
-            <span className="text-6xl font-light text-primary">4</span>
-          </div>
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 mb-4">
-            <span className="text-6xl font-light text-primary">0</span>
-          </div>
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 mb-4">
-            <span className="text-6xl font-light text-primary">4</span>
+    <div className="min-h-screen bg-neema-background flex flex-col items-center justify-center px-4 py-12">
+      <PageTitle title="Page Not Found | Neema" />
+      
+      <div className="text-center">
+        <div className="flex justify-center mb-6">
+          <div className="h-16 w-16 rounded-xl overflow-hidden">
+            <img 
+              src="/lovable-uploads/52340e59-2c7c-4b31-a8fd-e4d2bb5a7758.png" 
+              alt="Neema Logo" 
+              className="h-full w-full object-cover"
+            />
           </div>
         </div>
         
-        <h1 className="text-2xl font-bold mb-2">Page not found</h1>
-        <p className="text-muted-foreground mb-8">
-          Sorry, we couldn't find the page you're looking for. It might have been removed or is temporarily unavailable.
+        <h1 className="text-5xl font-bold mb-4">404</h1>
+        <h2 className="text-2xl font-semibold mb-4">Page Not Found</h2>
+        <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+          The page you are looking for doesn't exist or has been moved.
         </p>
         
-        <div className="space-x-4">
-          <Button asChild variant="outline" size="lg">
-            <Link to="/">Back to home</Link>
-          </Button>
-          <Button asChild className="magnetic-button" size="lg">
-            <Link to="/dashboard">Go to Dashboard</Link>
-          </Button>
-        </div>
+        <Button asChild className="neema-button">
+          <Link to="/">
+            Back to Home
+          </Link>
+        </Button>
       </div>
     </div>
   );
