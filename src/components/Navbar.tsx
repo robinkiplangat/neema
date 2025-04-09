@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -78,16 +78,16 @@ const Navbar = () => {
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-4">
           <SignedOut>
-            <SignInButton mode="modal">
+            <Link to="/login">
               <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10">
                 Log in
               </Button>
-            </SignInButton>
-            <SignUpButton mode="modal">
+            </Link>
+            <Link to="/signup">
               <Button className="neema-button">
                 Start for free
               </Button>
-            </SignUpButton>
+            </Link>
             <Link to="/joinwaitlist">
               <Button variant="ghost" className="text-neema-text hover:bg-neema-secondary/10">
                 Join waitlist
@@ -161,16 +161,16 @@ const Navbar = () => {
             </SignedIn>
             <div className="flex flex-col gap-3 pt-2">
               <SignedOut>
-                <SignInButton mode="modal">
+                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                   <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10 w-full">
                     Log in
                   </Button>
-                </SignInButton>
-                <SignUpButton mode="modal">
+                </Link>
+                <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
                   <Button className="neema-button w-full">
                     Start for free
                   </Button>
-                </SignUpButton>
+                </Link>
                 <Link to="/joinwaitlist" onClick={() => setIsMenuOpen(false)}>
                   <Button variant="ghost" className="text-neema-text hover:bg-neema-secondary/10 w-full">
                     Join waitlist

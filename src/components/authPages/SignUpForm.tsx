@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignUp } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { CheckCircle2 } from "lucide-react";
 
 export const SignUpForm = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,8 @@ export const SignUpForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [showVerification, setShowVerification] = useState(false);
   const { signUp, setActive } = useSignUp();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -21,27 +24,102 @@ export const SignUpForm = () => {
     setIsLoading(true);
 
     try {
-      const result = await signUp.create({
-        emailAddress: email,
-        password,
-        firstName,
-        lastName,
-      });
+      if (!showVerification) {
+        // Initial sign up
+        const result = await signUp.create({
+          emailAddress: email,
+          password,
+          first_name: firstName,
+          last_name: lastName,
+        });
 
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        navigate("/dashboard");
+        // If there are missing fields or CAPTCHA requirement, it will throw an error above
+        // Start email verification
+        await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+        setShowVerification(true);
+        toast({
+          title: "Verification needed",
+          description: "We've sent a verification code to your email address."
+        });
+      } else {
+        // Complete verification
+        const completeSignUp = await signUp.attemptEmailAddressVerification({
+          code: verificationCode,
+        });
+
+        if (completeSignUp.status === "complete") {
+          await setActive({ session: completeSignUp.createdSessionId });
+          navigate("/dashboard");
+          toast({
+            title: "Account created",
+            description: "Welcome to Neema!",
+          });
+        }
       }
     } catch (err: any) {
-      toast({
-        title: "Error",
-        description: err.errors?.[0]?.message || "Something went wrong",
-        variant: "destructive",
-      });
+      console.error("Sign up error:", err);
+      
+      // Handle specific error cases
+      if (err.errors && err.errors.length > 0) {
+        const error = err.errors[0];
+        
+        if (error.code === "form_identifier_exists") {
+          toast({
+            title: "Email already exists",
+            description: "This email is already registered. Please use another email or try logging in.",
+            variant: "destructive",
+          });
+        } else if (error.code === "form_param_missing") {
+          toast({
+            title: "Missing information",
+            description: error.message || "Please fill in all required fields",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: error.message || "Something went wrong",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (showVerification) {
+    return (
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="text-center mb-4">
+          <CheckCircle2 className="h-8 w-8 text-green-500 mx-auto mb-2" />
+          <h3 className="text-lg font-semibold">Check your email</h3>
+          <p className="text-sm text-muted-foreground">
+            We've sent a verification code to {email}
+          </p>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="verificationCode">Verification Code</Label>
+          <Input
+            id="verificationCode"
+            placeholder="Enter verification code"
+            value={verificationCode}
+            onChange={(e) => setVerificationCode(e.target.value)}
+            required
+          />
+        </div>
+        <Button type="submit" className="w-full neema-button" disabled={isLoading}>
+          {isLoading ? "Verifying..." : "Verify email & sign up"}
+        </Button>
+      </form>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -89,6 +167,10 @@ export const SignUpForm = () => {
           required
         />
       </div>
+      
+      {/* Clerk CAPTCHA container */}
+      <div id="clerk-captcha" className="mt-4"></div>
+      
       <Button type="submit" className="w-full neema-button" disabled={isLoading}>
         {isLoading ? "Creating account..." : "Create account"}
       </Button>

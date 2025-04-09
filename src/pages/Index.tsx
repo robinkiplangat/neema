@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle, Notebook, Mail, Calendar, Linkedin } from "luc
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FeatureCard from "@/components/FeatureCard";
-import { SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/clerk-react";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 const Index = () => {
   return (
