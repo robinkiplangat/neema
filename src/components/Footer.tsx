@@ -9,7 +9,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="h-8 w-8 rounded-xl overflow-hidden">
                 <img 
-                  src="/images/neema_logo.png" 
+                  src="/images/neema_icon.png" 
                   alt="Neema Logo" 
                   className="h-full w-full object-cover"
                 />

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import PageTitle from "@/components/shared/PageTitle";
 import { SignedIn } from "@clerk/clerk-react";
-import { SignUpForm } from "@/components/auth/SignUpForm";
+import { SignUpForm } from "@/components/authPages/SignUpForm";
 
 const Signup = () => {
   return (
