@@ -8,9 +8,9 @@ const DashboardTabs = () => {
   return (
     <Tabs defaultValue="overview" className="space-y-4">
       <TabsList className="bg-background border mb-2">
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="my-work">My Work</TabsTrigger>
-        <TabsTrigger value="productivity">Insights</TabsTrigger>
+        <TabsTrigger value="overview" className="data-[state=active]:bg-neema-primary data-[state=active]:text-white">Overview</TabsTrigger>
+        <TabsTrigger value="my-work" className="data-[state=active]:bg-neema-primary data-[state=active]:text-white">My Work</TabsTrigger>
+        <TabsTrigger value="productivity" className="data-[state=active]:bg-neema-primary data-[state=active]:text-white">Insights</TabsTrigger>
       </TabsList>
       
       <TabsContent value="overview" className="space-y-6">

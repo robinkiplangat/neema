@@ -1,25 +1,20 @@
 
+import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
 import PageTitle from "@/components/shared/PageTitle";
+import { SignIn, SignedIn } from "@clerk/clerk-react";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle login logic here
-    console.log({ email, password });
-  };
-
   return (
     <div className="min-h-screen bg-neema-background flex flex-col">
       <PageTitle title="Log in to Neema" />
+      
+      {/* Redirect if already logged in */}
+      <SignedIn>
+        <Navigate to="/dashboard" replace />
+      </SignedIn>
       
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
@@ -27,7 +22,7 @@ const Login = () => {
             <Link to="/" className="inline-flex items-center gap-2 mb-8">
               <div className="h-10 w-10 rounded-xl overflow-hidden">
                 <img 
-                  src="/lovable-uploads/52340e59-2c7c-4b31-a8fd-e4d2bb5a7758.png" 
+                  src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
                   alt="Neema Logo" 
                   className="h-full w-full object-cover"
                 />
@@ -38,51 +33,19 @@ const Login = () => {
           </div>
           
           <div className="bg-white p-8 rounded-xl shadow-md border border-neema-secondary/20">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="border-neema-secondary/30 focus-visible:ring-neema-primary"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
-                  <Link to="/forgot-password" className="text-sm text-neema-accent hover:underline">
-                    Forgot password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="border-neema-secondary/30 focus-visible:ring-neema-primary"
-                />
-              </div>
-              
-              <Button type="submit" className="neema-button w-full mt-6">
-                Log in
-              </Button>
-              
-              <div className="text-center mt-6">
-                <p className="text-sm text-muted-foreground">
-                  Don't have an account?{" "}
-                  <Link to="/signup" className="text-neema-accent hover:underline font-medium">
-                    Sign up
-                  </Link>
-                </p>
-              </div>
-            </form>
+            <SignIn
+              appearance={{
+                elements: {
+                  formButtonPrimary: "neema-button py-2",
+                  footerAction: "text-neema-accent hover:underline",
+                  card: "shadow-none border-none p-0",
+                }
+              }}
+              routing="path"
+              path="/login"
+              signUpUrl="/signup"
+              redirectUrl="/dashboard"
+            />
           </div>
           
           <div className="mt-8 text-center">

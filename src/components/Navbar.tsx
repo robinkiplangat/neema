@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,7 +21,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2">
           <div className="h-10 w-10 rounded-xl overflow-hidden">
             <img 
-              src="/lovable-uploads/52340e59-2c7c-4b31-a8fd-e4d2bb5a7758.png" 
+              src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
               alt="Neema Logo" 
               className="h-full w-full object-cover"
             />
@@ -65,22 +66,45 @@ const Navbar = () => {
           >
             Resources
           </Link>
-          <Link 
-            to="/dashboard" 
-            className={`text-foreground/80 hover:text-foreground transition-colors`}
-          >
-            Dashboard
-          </Link>
+          <SignedIn>
+            <Link 
+              to="/dashboard" 
+              className={`text-foreground/80 hover:text-foreground transition-colors`}
+            >
+              Dashboard
+            </Link>
+          </SignedIn>
         </nav>
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10" asChild>
-            <Link to="/login">Log in</Link>
-          </Button>
-          <Button className="neema-button" asChild>
-            <Link to="/signup">Start for free</Link>
-          </Button>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10">
+                Log in
+              </Button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <Button className="neema-button">
+                Start for free
+              </Button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <Link to="/dashboard">
+              <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10 mr-2">
+                Dashboard
+              </Button>
+            </Link>
+            <UserButton 
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: "h-9 w-9"
+                }
+              }}
+            />
+          </SignedIn>
         </div>
 
         {/* Mobile Menu Button */}
@@ -122,20 +146,45 @@ const Navbar = () => {
             >
               Resources
             </Link>
-            <Link 
-              to="/dashboard" 
-              className="py-2 text-foreground/80 hover:text-foreground"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Dashboard
-            </Link>
+            <SignedIn>
+              <Link 
+                to="/dashboard" 
+                className="py-2 text-foreground/80 hover:text-foreground"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+            </SignedIn>
             <div className="flex flex-col gap-3 pt-2">
-              <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10 w-full" asChild>
-                <Link to="/login">Log in</Link>
-              </Button>
-              <Button className="neema-button w-full" asChild>
-                <Link to="/signup">Start for free</Link>
-              </Button>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10 w-full">
+                    Log in
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button className="neema-button w-full">
+                    Start for free
+                  </Button>
+                </SignUpButton>
+              </SignedOut>
+              <SignedIn>
+                <div className="flex items-center justify-between">
+                  <Link to="/dashboard" className="flex-1 mr-2">
+                    <Button variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10 w-full">
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <UserButton 
+                    afterSignOutUrl="/"
+                    appearance={{
+                      elements: {
+                        avatarBox: "h-9 w-9"
+                      }
+                    }}
+                  />
+                </div>
+              </SignedIn>
             </div>
           </div>
         </div>

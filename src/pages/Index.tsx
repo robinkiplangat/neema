@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle, Notebook, Mail, Calendar, Linkedin } from "luc
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FeatureCard from "@/components/FeatureCard";
+import { SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/clerk-react";
 
 const Index = () => {
   return (
@@ -30,17 +31,27 @@ const Index = () => {
                 Neema brings together your notes, emails, calendar, and socials into one seamless workflow.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-slide-up" style={{animationDelay: '0.8s'}}>
-                <Button asChild size="lg" className="neema-button">
-                  <Link to="/signup">
-                    Start for free
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10">
-                  <Link to="/login">
-                    Log in
-                  </Link>
-                </Button>
+                <SignedOut>
+                  <Button asChild size="lg" className="neema-button">
+                    <Link to="/signup">
+                      Start for free
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="border-neema-secondary text-neema-text hover:bg-neema-secondary/10">
+                    <Link to="/login">
+                      Log in
+                    </Link>
+                  </Button>
+                </SignedOut>
+                <SignedIn>
+                  <Button asChild size="lg" className="neema-button">
+                    <Link to="/dashboard">
+                      Go to Dashboard
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Link>
+                  </Button>
+                </SignedIn>
               </div>
               <div className="flex flex-col gap-3 animate-slide-up" style={{animationDelay: '1s'}}>
                 <p className="text-sm text-muted-foreground">Integrated with your favorite tools:</p>
@@ -66,14 +77,14 @@ const Index = () => {
             </div>
             
             <div className="flex-1 flex justify-center">
-              <div className="relative w-full max-w-md">
+              <div className="relative w-full max-w-md animate-float">
                 <img 
-                  src="/lovable-uploads/73df3226-7db9-4370-b3d3-997d904adf13.png" 
-                  alt="Neema App" 
-                  className="w-full object-cover rounded-xl shadow-lg"
+                  src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
+                  alt="Neema Assistant with integrated apps" 
+                  className="w-full object-contain rounded-xl"
                 />
-                <div className="absolute -top-4 -left-4 w-24 h-24 bg-neema-primary rounded-full opacity-20 blur-xl z-0"></div>
-                <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-neema-accent rounded-full opacity-20 blur-xl z-0"></div>
+                <div className="absolute -top-4 -left-4 w-24 h-24 bg-neema-primary rounded-full opacity-20 blur-xl z-0 animate-pulse"></div>
+                <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-neema-accent rounded-full opacity-20 blur-xl z-0 animate-pulse"></div>
               </div>
             </div>
           </div>
@@ -167,16 +178,25 @@ const Index = () => {
             Join thousands of solo founders, creators, and moonlighters who use Neema to stay on top of their work and goals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-white text-neema-primary hover:bg-white/90">
-              <Link to="/signup">
-                Start for free
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              <Link to="/demo">
-                See Neema in action
-              </Link>
-            </Button>
+            <SignedOut>
+              <Button asChild size="lg" className="bg-white text-neema-primary hover:bg-white/90">
+                <Link to="/signup">
+                  Start for free
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Link to="/demo">
+                  See Neema in action
+                </Link>
+              </Button>
+            </SignedOut>
+            <SignedIn>
+              <Button asChild size="lg" className="bg-white text-neema-primary hover:bg-white/90">
+                <Link to="/dashboard">
+                  Go to Dashboard
+                </Link>
+              </Button>
+            </SignedIn>
           </div>
         </div>
       </section>

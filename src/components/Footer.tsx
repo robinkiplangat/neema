@@ -10,7 +10,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="h-8 w-8 rounded-xl overflow-hidden">
                 <img 
-                  src="/lovable-uploads/52340e59-2c7c-4b31-a8fd-e4d2bb5a7758.png" 
+                  src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
                   alt="Neema Logo" 
                   className="h-full w-full object-cover"
                 />
@@ -18,7 +18,7 @@ const Footer = () => {
               <span className="text-xl font-bold">Neema</span>
             </Link>
             <p className="text-muted-foreground mb-4 max-w-xs">
-              Your friendly AI co-pilot for solo founders, creators, and moonlighters. Track progress, manage tasks, and stay in flow — effortlessly.
+              Track progress, manage tasks, and stay in flow — effortlessly. Built for founders, by founders.
             </p>
           </div>
           
