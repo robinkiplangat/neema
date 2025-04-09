@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle, Notebook, Mail, Calendar, Linkedin } from "lucide-react";
@@ -24,9 +23,9 @@ const Index = () => {
               <p className="text-lg md:text-xl text-muted-foreground max-w-md animate-slide-up mt-4" style={{animationDelay: '0.2s'}}>
                 Your friendly AI co-pilot for <span className="font-semibold">solo founders, creators, and moonlighters.</span>
               </p>
-              <p className="text-lg md:text-xl text-neema-text max-w-md animate-slide-up" style={{animationDelay: '0.4s'}}>
+              {/* <p className="text-lg md:text-xl text-neema-text max-w-md animate-slide-up" style={{animationDelay: '0.4s'}}>
                 Track progress, manage tasks, and stay in flow — effortlessly.
-              </p>
+              </p> */}
               <p className="text-gray-600 max-w-md animate-slide-up" style={{animationDelay: '0.6s'}}>
                 Neema brings together your notes, emails, calendar, and socials into one seamless workflow.
               </p>
@@ -62,11 +61,11 @@ const Index = () => {
                   </div>
                   <div className="flex items-center gap-1 text-sm">
                     <CheckCircle className="h-4 w-4 text-neema-primary" />
-                    <span>Gmail</span>
+                    <span>Email</span>
                   </div>
                   <div className="flex items-center gap-1 text-sm">
                     <CheckCircle className="h-4 w-4 text-neema-primary" />
-                    <span>Google Calendar</span>
+                    <span>Calendar</span>
                   </div>
                   <div className="flex items-center gap-1 text-sm">
                     <CheckCircle className="h-4 w-4 text-neema-primary" />
@@ -79,9 +78,9 @@ const Index = () => {
             <div className="flex-1 flex justify-center">
               <div className="relative w-full max-w-md animate-float">
                 <img 
-                  src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
-                  alt="Neema Assistant with integrated apps" 
-                  className="w-full object-contain rounded-xl"
+                  src="/images/neema_mascot.png" 
+                  alt="Neema Logo" 
+                  className="h-full w-full object-cover"
                 />
                 <div className="absolute -top-4 -left-4 w-24 h-24 bg-neema-primary rounded-full opacity-20 blur-xl z-0 animate-pulse"></div>
                 <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-neema-accent rounded-full opacity-20 blur-xl z-0 animate-pulse"></div>

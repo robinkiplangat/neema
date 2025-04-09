@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -21,7 +20,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2">
           <div className="h-10 w-10 rounded-xl overflow-hidden">
             <img 
-              src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
+              src="/images/neema_icon.png" 
               alt="Neema Logo" 
               className="h-full w-full object-cover"
             />

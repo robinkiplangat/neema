@@ -1,10 +1,9 @@
-
 import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import PageTitle from "@/components/shared/PageTitle";
-import { SignIn, SignedIn } from "@clerk/clerk-react";
+import { SignedIn } from "@clerk/clerk-react";
+import { SignInForm } from "@/components/auth/SignInForm";
 
 const Login = () => {
   return (
@@ -22,7 +21,7 @@ const Login = () => {
             <Link to="/" className="inline-flex items-center gap-2 mb-8">
               <div className="h-10 w-10 rounded-xl overflow-hidden">
                 <img 
-                  src="/lovable-uploads/970f89d1-4d8f-45e1-99de-43d7cf83ba4c.png" 
+                  src="/images/neema_icon.png" 
                   alt="Neema Logo" 
                   className="h-full w-full object-cover"
                 />
@@ -33,19 +32,7 @@ const Login = () => {
           </div>
           
           <div className="bg-white p-8 rounded-xl shadow-md border border-neema-secondary/20">
-            <SignIn
-              appearance={{
-                elements: {
-                  formButtonPrimary: "neema-button py-2",
-                  footerAction: "text-neema-accent hover:underline",
-                  card: "shadow-none border-none p-0",
-                }
-              }}
-              routing="path"
-              path="/login"
-              signUpUrl="/signup"
-              redirectUrl="/dashboard"
-            />
+            <SignInForm />
           </div>
           
           <div className="mt-8 text-center">
