@@ -3,6 +3,59 @@
 ## Overview
 The Neema application uses React Query for API integration, providing a robust solution for data fetching, caching, and state management. This document outlines the API integration patterns and best practices.
 
+## Environment Variables
+
+### 1. Frontend Environment Variables
+All frontend environment variables must be prefixed with `VITE_` to be accessible in the Vite application:
+
+```env
+# Core
+VITE_API_URL=http://localhost:5000
+
+# AI Services
+VITE_OPENROUTER_API_KEY=your-api-key
+VITE_OPENROUTER_ENDPOINT=https://openrouter.ai/api/v1/chat/completions
+VITE_DEFAULT_MODEL=meta-llama/llama-4-maverick:free
+
+# Integrations
+VITE_NOTION_CLIENT_ID=your-client-id
+VITE_NOTION_CLIENT_SECRET=your-client-secret
+
+# Authentication
+VITE_CLERK_PUBLISHABLE_KEY=your-publishable-key
+VITE_CLERK_SECRET_KEY=your-secret-key
+
+# Third-party Services
+VITE_LINKEDIN_CLIENT_ID=your-client-id
+VITE_LINKEDIN_CLIENT_SECRET=your-client-secret
+VITE_GCAL_CLIENT_ID=your-client-id
+VITE_GCAL_CLIENT_SECRET=your-client-secret
+VITE_GMAIL_KEY_ID=your-key-id
+VITE_TWITTER_CLIENT_ID=your-client-id
+VITE_TWITTER_CLIENT_SECRET=your-client-secret
+```
+
+### 2. Backend Environment Variables
+Backend environment variables do not require the `VITE_` prefix:
+
+```env
+# Core
+PORT=5000
+NODE_ENV=development
+
+# MongoDB
+MONGODB_URI=your-mongodb-uri
+```
+
+### 3. Accessing Environment Variables
+```typescript
+// Frontend (Vite)
+const apiUrl = import.meta.env.VITE_API_URL;
+
+// Backend (Node.js)
+const port = process.env.PORT;
+```
+
 ## API Client Setup
 
 ### 1. React Query Configuration
@@ -27,6 +80,7 @@ export const queryClient = new QueryClient({
 // src/lib/api-client.ts
 import axios from 'axios'
 
+// Create API client with environment variables
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
@@ -34,7 +88,7 @@ export const apiClient = axios.create({
   },
 })
 
-// Request interceptor
+// Request interceptor for authentication
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
@@ -43,7 +97,7 @@ apiClient.interceptors.request.use((config) => {
   return config
 })
 
-// Response interceptor
+// Response interceptor for error handling
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {

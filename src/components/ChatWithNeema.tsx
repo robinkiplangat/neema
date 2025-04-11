@@ -24,30 +24,76 @@ const ChatWithNeema = () => {
   const [notionNotes, setNotionNotes] = useState<notionService.NotionNote[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognition = useRef<SpeechRecognition | null>(null);
+  const [transcript, setTranscript] = useState('');
 
   // Set up speech recognition
   useEffect(() => {
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       recognition.current = new SpeechRecognition();
-      recognition.current.continuous = true;
+      recognition.current.continuous = false;
       recognition.current.interimResults = true;
+      recognition.current.lang = 'en-US';
+      
+      recognition.current.onstart = () => {
+        console.log('Speech recognition started');
+        setIsListening(true);
+      };
       
       recognition.current.onresult = (event) => {
-        const transcript = Array.from(event.results)
+        const currentTranscript = Array.from(event.results)
           .map(result => result[0])
           .map(result => result.transcript)
           .join('');
         
-        setInput(transcript);
+        setTranscript(currentTranscript);
+        setInput(currentTranscript);
       };
       
       recognition.current.onerror = (event) => {
-        console.error('Speech recognition error', event.error);
+        console.error('Speech recognition error:', event.error);
+        
+        switch (event.error) {
+          case 'network':
+            setMessages(prev => [...prev, { 
+              sender: 'Neema', 
+              text: 'Network error occurred. Please check your internet connection and try again.' 
+            }]);
+            break;
+          case 'not-allowed':
+            setMessages(prev => [...prev, { 
+              sender: 'Neema', 
+              text: 'Microphone access was denied. Please allow microphone access to use voice input.' 
+            }]);
+            break;
+          case 'no-speech':
+            break;
+          default:
+            setMessages(prev => [...prev, { 
+              sender: 'Neema', 
+              text: 'An error occurred with voice input. Please try again or use text input instead.' 
+            }]);
+        }
+        
+        setIsListening(false);
+        setTranscript('');
+      };
+
+      recognition.current.onend = () => {
+        console.log('Speech recognition ended');
+        
+        if (transcript.trim() && isListening) {
+          const finalTranscript = transcript.trim();
+          setMessages(prev => [...prev, { sender: 'User', text: finalTranscript }]);
+          handleAIResponse(finalTranscript);
+          setInput('');
+          setTranscript('');
+        }
+        
         setIsListening(false);
       };
     }
-  }, []);
+  }, [isListening, transcript]);
 
   // Fetch calendar events on component mount
   useEffect(() => {
@@ -76,16 +122,82 @@ const ChatWithNeema = () => {
 
   const toggleListening = () => {
     if (!recognition.current) {
-      alert('Speech recognition is not supported in your browser.');
+      setMessages(prev => [...prev, { 
+        sender: 'Neema', 
+        text: 'Speech recognition is not supported in your browser. Please use text input instead.' 
+      }]);
       return;
     }
     
-    if (isListening) {
-      recognition.current.stop();
+    try {
+      if (isListening) {
+        recognition.current.stop();
+      } else {
+        setTranscript('');
+        recognition.current.start();
+      }
+    } catch (error) {
+      console.error('Error toggling speech recognition:', error);
       setIsListening(false);
-    } else {
-      recognition.current.start();
-      setIsListening(true);
+      setMessages(prev => [...prev, { 
+        sender: 'Neema', 
+        text: 'An error occurred with voice input. Please try again or use text input instead.' 
+      }]);
+    }
+  };
+
+  const handleAIResponse = async (userMessage: string) => {
+    setIsLoading(true);
+
+    try {
+      // Convert messages to the format expected by the AI service
+      const chatHistory = messages.map(msg => ({
+        role: msg.sender === 'User' ? 'user' as const : 'assistant' as const,
+        content: msg.text
+      }));
+
+      const response = await aiService.generateResponse(userMessage, chatHistory);
+      
+      // Process special commands
+      if (userMessage.toLowerCase().includes('calendar') || userMessage.toLowerCase().includes('schedule')) {
+        // Fetch calendar data if asked about calendar
+        const events = await calendarService.fetchTodayEvents();
+        setCalendarEvents(events);
+        
+        let eventText = 'Here are your events for today:\n';
+        if (events.length === 0) {
+          eventText = 'You have no events scheduled for today.';
+        } else {
+          events.forEach(event => {
+            const start = new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            eventText += `• ${start} - ${event.title}\n`;
+          });
+        }
+        
+        setMessages(prev => [...prev, { sender: 'Neema', text: response }, { sender: 'Neema', text: eventText }]);
+      } else if (userMessage.toLowerCase().includes('notion') || userMessage.toLowerCase().includes('notes')) {
+        // Fetch Notion data if asked about notes
+        const notes = await notionService.fetchNotionNotes();
+        setNotionNotes(notes);
+        
+        let notesText = 'Here are your recent notes:\n';
+        if (notes.length === 0) {
+          notesText = 'You don\'t have any notes yet.';
+        } else {
+          notes.forEach(note => {
+            notesText += `• ${note.title}\n`;
+          });
+        }
+        
+        setMessages(prev => [...prev, { sender: 'Neema', text: response }, { sender: 'Neema', text: notesText }]);
+      } else {
+        setMessages(prev => [...prev, { sender: 'Neema', text: response }]);
+      }
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      setMessages(prev => [...prev, { sender: 'Neema', text: 'Sorry, I encountered an error. Please try again.' }]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -94,58 +206,7 @@ const ChatWithNeema = () => {
       const userMessage = input.trim();
       setMessages(prev => [...prev, { sender: 'User', text: userMessage }]);
       setInput('');
-      setIsLoading(true);
-
-      try {
-        // Convert messages to the format expected by the AI service
-        const chatHistory = messages.map(msg => ({
-          role: msg.sender === 'User' ? 'user' as const : 'assistant' as const,
-          content: msg.text
-        }));
-
-        const response = await aiService.generateResponse(userMessage, chatHistory);
-        
-        // Process special commands
-        if (userMessage.toLowerCase().includes('calendar') || userMessage.toLowerCase().includes('schedule')) {
-          // Fetch calendar data if asked about calendar
-          const events = await calendarService.fetchTodayEvents();
-          setCalendarEvents(events);
-          
-          let eventText = 'Here are your events for today:\n';
-          if (events.length === 0) {
-            eventText = 'You have no events scheduled for today.';
-          } else {
-            events.forEach(event => {
-              const start = new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-              eventText += `• ${start} - ${event.title}\n`;
-            });
-          }
-          
-          setMessages(prev => [...prev, { sender: 'Neema', text: response }, { sender: 'Neema', text: eventText }]);
-        } else if (userMessage.toLowerCase().includes('notion') || userMessage.toLowerCase().includes('notes')) {
-          // Fetch Notion data if asked about notes
-          const notes = await notionService.fetchNotionNotes();
-          setNotionNotes(notes);
-          
-          let notesText = 'Here are your recent notes:\n';
-          if (notes.length === 0) {
-            notesText = 'You don\'t have any notes yet.';
-          } else {
-            notes.forEach(note => {
-              notesText += `• ${note.title}\n`;
-            });
-          }
-          
-          setMessages(prev => [...prev, { sender: 'Neema', text: response }, { sender: 'Neema', text: notesText }]);
-        } else {
-          setMessages(prev => [...prev, { sender: 'Neema', text: response }]);
-        }
-      } catch (error) {
-        console.error('Error getting AI response:', error);
-        setMessages(prev => [...prev, { sender: 'Neema', text: 'Sorry, I encountered an error. Please try again.' }]);
-      } finally {
-        setIsLoading(false);
-      }
+      handleAIResponse(userMessage);
     }
   };
 
@@ -199,28 +260,34 @@ const ChatWithNeema = () => {
               </div>
             </div>
           )}
+          {isListening && (
+            <div className="mb-3 p-2 rounded-lg bg-pastel-sky/20 text-right">
+              <div className="text-xs font-medium text-muted-foreground mb-1">Recording...</div>
+              <div className="whitespace-pre-wrap">{transcript || "Listening..."}</div>
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
         <div className="flex items-center mt-auto">
           <Button 
             type="button" 
-            variant="ghost" 
-            className="h-10 w-10 p-0 mr-2"
+            variant={isListening ? "default" : "ghost"}
+            className={`h-10 w-10 p-0 mr-2 ${isListening ? "bg-red-500 text-white hover:bg-red-600" : ""}`}
             onClick={toggleListening}
           >
-            {isListening ? <MicOff className="h-5 w-5 text-red-500" /> : <Mic className="h-5 w-5" />}
+            {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
           </Button>
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type a message..."
+            placeholder={isListening ? "Listening..." : "Type a message..."}
             className="flex-1 mr-2"
             disabled={isListening}
           />
           <Button 
             onClick={handleSend} 
-            disabled={!input.trim() || isLoading}
+            disabled={!input.trim() || isLoading || isListening}
             className="h-10 w-10 p-0"
           >
             <Send className="h-4 w-4" />

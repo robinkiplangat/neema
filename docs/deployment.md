@@ -17,8 +17,33 @@ npm run preview
 ### 2. Environment Configuration
 ```env
 # .env.production
+# Core
 VITE_API_URL=https://api.neema.com
+
+# AI Services
+VITE_OPENROUTER_API_KEY=your_production_key
+VITE_OPENROUTER_ENDPOINT=https://openrouter.ai/api/v1/chat/completions
+VITE_DEFAULT_MODEL=meta-llama/llama-4-maverick:free
+
+# Authentication
 VITE_CLERK_PUBLISHABLE_KEY=your_production_key
+VITE_CLERK_SECRET_KEY=your_production_key
+
+# Integrations
+VITE_NOTION_CLIENT_ID=your_production_key
+VITE_NOTION_CLIENT_SECRET=your_production_key
+
+# Third-party Services
+VITE_LINKEDIN_CLIENT_ID=your_production_key
+VITE_LINKEDIN_CLIENT_SECRET=your_production_key
+VITE_GCAL_CLIENT_ID=your_production_key
+VITE_GCAL_CLIENT_SECRET=your_production_key
+VITE_GMAIL_KEY_ID=your_production_key
+VITE_TWITTER_CLIENT_ID=your_production_key
+VITE_TWITTER_CLIENT_SECRET=your_production_key
+
+# Monitoring
+VITE_SENTRY_DSN=your_production_key
 ```
 
 ## Deployment Options
@@ -128,9 +153,17 @@ jobs:
 
 ### 2. Environment Variables
 ```bash
-# Required environment variables
+# Required environment variables for frontend
 VITE_API_URL=https://api.neema.com
 VITE_CLERK_PUBLISHABLE_KEY=your_key
+VITE_OPENROUTER_API_KEY=your_key
+VITE_OPENROUTER_ENDPOINT=https://openrouter.ai/api/v1/chat/completions
+VITE_DEFAULT_MODEL=meta-llama/llama-4-maverick:free
+
+# Required environment variables for backend
+PORT=5000
+NODE_ENV=production
+MONGODB_URI=your_mongodb_uri
 ```
 
 ## Performance Optimization

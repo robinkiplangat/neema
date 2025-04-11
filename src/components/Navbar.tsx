@@ -15,9 +15,9 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <header className="fixed w-full bg-neema-background/95 backdrop-blur-md z-50 border-b border-neema-secondary/30">
-      <div className="section-container py-3 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
+    <header className="fixed w-full bg-neema-background/95 backdrop-blur-md z-50 border-b border-neema-secondary/10">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-4 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl overflow-hidden">
             <img 
               src="/images/neema_icon.png" 
