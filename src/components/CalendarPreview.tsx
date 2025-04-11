@@ -6,15 +6,27 @@ import { fetchTodayEvents, CalendarEvent } from '@/services/googleCalendarServic
 const CalendarPreview = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const getEvents = async () => {
       try {
         setIsLoading(true);
+        setError(null);
         const todayEvents = await fetchTodayEvents();
-        setEvents(todayEvents);
+        
+        // Ensure todayEvents is an array
+        if (Array.isArray(todayEvents)) {
+          setEvents(todayEvents);
+        } else {
+          console.error('Expected array of events, got:', todayEvents);
+          setEvents([]);
+          setError('Failed to load calendar events');
+        }
       } catch (error) {
         console.error('Error fetching calendar events:', error);
+        setEvents([]);
+        setError('Failed to load calendar events');
       } finally {
         setIsLoading(false);
       }
@@ -25,7 +37,12 @@ const CalendarPreview = () => {
 
   // Function to format time
   const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    try {
+      return new Date(dateString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch (error) {
+      console.error('Error formatting time:', error);
+      return 'Invalid time';
+    }
   };
 
   return (
@@ -40,6 +57,10 @@ const CalendarPreview = () => {
         {isLoading ? (
           <div className="flex justify-center py-4">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-neema-primary"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center py-6 text-red-500">
+            <p>{error}</p>
           </div>
         ) : events.length === 0 ? (
           <div className="text-center py-6 text-muted-foreground">
