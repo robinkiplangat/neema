@@ -64,6 +64,12 @@ router.get('/events', async (req, res) => {
     // }));
     
     // For development, use mock data
+    // Ensure we're always returning an array
+    if (!Array.isArray(mockEvents)) {
+      console.error('mockEvents is not an array:', mockEvents);
+      return res.json([]);
+    }
+    
     return res.json(mockEvents);
   } catch (error) {
     console.error('Error fetching calendar events:', error);

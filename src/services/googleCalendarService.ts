@@ -26,7 +26,14 @@ export const fetchCalendarEvents = async (startDate?: Date, endDate?: Date): Pro
     
     const url = `/api/calendar/events${params.toString() ? `?${params.toString()}` : ''}`;
     const response = await axios.get(url);
-    return response.data;
+    
+    // Ensure response.data is an array
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else {
+      console.error('Expected array of events, got:', response.data);
+      return [];
+    }
   } catch (error) {
     console.error('Error fetching calendar events:', error);
     return [];
@@ -50,11 +57,16 @@ export const createCalendarEvent = async (event: Omit<CalendarEvent, 'id'>): Pro
  * Fetch today's events
  */
 export const fetchTodayEvents = async (): Promise<CalendarEvent[]> => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  
-  return fetchCalendarEvents(today, tomorrow);
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    return await fetchCalendarEvents(today, tomorrow);
+  } catch (error) {
+    console.error('Error fetching today\'s events:', error);
+    return [];
+  }
 }; 
