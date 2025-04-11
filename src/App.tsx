@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import Timesheet from "./pages/Timesheet";
 import KanbanBoard from "./pages/KanbanBoard";
 import NotFound from "./pages/NotFound";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -88,6 +89,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <KanbanBoard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/settings" 
+                element={
+                  <ProtectedRoute>
+                    <Settings />
                   </ProtectedRoute>
                 } 
               />
