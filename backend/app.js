@@ -35,6 +35,7 @@ app.use('/api/projects', require('./routes/projects'));
 app.use('/api/notes', require('./routes/notes'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/ai', aiLimiter, require('./routes/ai'));
+app.use('/api/calendar', require('./routes/api/calendar'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

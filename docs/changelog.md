@@ -118,3 +118,19 @@ The application is designed to be deployed as:
 - Improve mobile responsiveness
 - Add advanced analytics
 - Integrate with third-party services 
+
+## Version 1.1.0 - [Date]
+
+### Added
+- `ChatWithNeema` component with voice input using the Web Speech API.
+- Integration with OpenRouter, Google Calendar, Notion, and LinkedIn services.
+- `CalendarPreview` component to display Google Calendar events.
+- Backend routes for calendar integration using mock data for development.
+
+### Updated
+- Modular implementation with frontend components, service files for API calls, and backend routes for data processing.
+
+### Notes
+- Application uses mock data for development until full OAuth implementation is completed.
+
+--- 
