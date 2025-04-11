@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { useUser } from "@clerk/clerk-react";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -35,6 +36,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { user } = useUser();
+  
+  const firstName = user?.firstName || "";
+  const lastName = user?.lastName || "";
+  const email = user?.primaryEmailAddress?.emailAddress || "";
+  const profileImageUrl = user?.imageUrl || "";
+  const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`;
   
   const navItems = [
     { name: "Dashboard", href: "/dashboard", icon: <LayoutDashboard className="h-5 w-5" /> },
@@ -112,12 +120,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>AJ</AvatarFallback>
+                  <AvatarImage src={profileImageUrl} />
+                  <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium">Alex Johnson</p>
-                  <p className="text-xs text-muted-foreground">alex@company.com</p>
+                  <p className="text-sm font-medium">{firstName} {lastName}</p>
+                  <p className="text-xs text-muted-foreground">{email}</p>
                 </div>
               </div>
               
@@ -163,8 +171,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             </Link>
             
             <Avatar className="h-8 w-8">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>AJ</AvatarFallback>
+              <AvatarImage src={profileImageUrl} />
+              <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
           </div>
         </div>
