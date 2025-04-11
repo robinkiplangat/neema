@@ -119,6 +119,25 @@ The application is designed to be deployed as:
 - Add advanced analytics
 - Integrate with third-party services 
 
+## Version 1.1.1 - [Current Date]
+
+### Added
+- Standardized environment variable naming convention with `VITE_` prefix for frontend variables
+- Comprehensive environment variable documentation in API integration and deployment guides
+
+### Updated
+- Environment variable references in frontend services to use `import.meta.env.VITE_*`
+- Documentation to reflect proper environment variable usage in Vite applications
+- API client configuration to use standardized environment variables
+
+### Fixed
+- Environment variable access in frontend services to properly use Vite's `import.meta.env`
+- Inconsistent environment variable naming across the application
+
+### Notes
+- All frontend environment variables must now be prefixed with `VITE_` to be accessible in the Vite application
+- Backend environment variables remain unchanged (no `VITE_` prefix required)
+
 ## Version 1.1.0 - [Date]
 
 ### Added
