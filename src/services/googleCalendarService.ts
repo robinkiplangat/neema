@@ -9,6 +9,9 @@ export interface CalendarEvent {
   location?: string;
 }
 
+// Base URL for API calls
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 /**
  * Fetch calendar events
  */
@@ -24,18 +27,32 @@ export const fetchCalendarEvents = async (startDate?: Date, endDate?: Date): Pro
       params.append('end', endDate.toISOString());
     }
     
-    const url = `/api/calendar/events${params.toString() ? `?${params.toString()}` : ''}`;
+    const url = `${API_BASE_URL}/api/calendar/events${params.toString() ? `?${params.toString()}` : ''}`;
     const response = await axios.get(url);
     
-    // Ensure response.data is an array
-    if (Array.isArray(response.data)) {
-      return response.data;
+    // Check response type and handle accordingly
+    if (response.headers['content-type']?.includes('application/json')) {
+      if (Array.isArray(response.data)) {
+        return response.data;
+      } else {
+        console.error('Expected array of events, got:', response.data);
+        return [];
+      }
     } else {
-      console.error('Expected array of events, got:', response.data);
+      console.error('Received non-JSON response:', response.headers['content-type']);
       return [];
     }
   } catch (error) {
-    console.error('Error fetching calendar events:', error);
+    if (axios.isAxiosError(error)) {
+      console.error('Calendar API Error:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        headers: error.response?.headers
+      });
+    } else {
+      console.error('Error fetching calendar events:', error);
+    }
     return [];
   }
 };
