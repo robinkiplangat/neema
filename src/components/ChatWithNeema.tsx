@@ -2,26 +2,30 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Mic, MicOff, Send, Calendar, FileText, Linkedin } from 'lucide-react';
+import { Mic, MicOff, Send, Calendar, FileText, Linkedin, RefreshCw } from 'lucide-react';
 import * as aiService from '@/services/aiService';
-import * as notionService from '@/services/notionService';
-import * as calendarService from '@/services/googleCalendarService';
-import * as linkedInService from '@/services/linkedInService';
+import { useAI } from '@/context/AIContext';
+import { useToast } from '@/hooks/use-toast';
+import { useUser } from '@clerk/clerk-react';
 
 interface Message {
   sender: 'User' | 'Neema';
   text: string;
+  timestamp?: Date;
 }
 
 const ChatWithNeema = () => {
+  const { user } = useUser();
+  const userId = user?.id || '';
+  const { toast } = useToast();
+  const { neemaContext, isContextLoading, refreshContext } = useAI();
+  
   const [messages, setMessages] = useState<Message[]>([
     { sender: 'Neema', text: 'Hello! How can I assist you today?' }
   ]);
   const [input, setInput] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [calendarEvents, setCalendarEvents] = useState<calendarService.CalendarEvent[]>([]);
-  const [notionNotes, setNotionNotes] = useState<notionService.NotionNote[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognition = useRef<SpeechRecognition | null>(null);
   const [transcript, setTranscript] = useState('');
@@ -84,7 +88,11 @@ const ChatWithNeema = () => {
         
         if (transcript.trim() && isListening) {
           const finalTranscript = transcript.trim();
-          setMessages(prev => [...prev, { sender: 'User', text: finalTranscript }]);
+          setMessages(prev => [...prev, { 
+            sender: 'User', 
+            text: finalTranscript,
+            timestamp: new Date()
+          }]);
           handleAIResponse(finalTranscript);
           setInput('');
           setTranscript('');
@@ -94,26 +102,6 @@ const ChatWithNeema = () => {
       };
     }
   }, [isListening, transcript]);
-
-  // Fetch calendar events on component mount
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const events = await calendarService.fetchTodayEvents();
-      setCalendarEvents(events);
-    };
-    
-    fetchEvents();
-  }, []);
-
-  // Fetch Notion notes on component mount
-  useEffect(() => {
-    const fetchNotes = async () => {
-      const notes = await notionService.fetchNotionNotes();
-      setNotionNotes(notes);
-    };
-    
-    fetchNotes();
-  }, []);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -147,6 +135,14 @@ const ChatWithNeema = () => {
   };
 
   const handleAIResponse = async (userMessage: string) => {
+    if (!userId) {
+      setMessages(prev => [...prev, { 
+        sender: 'Neema', 
+        text: 'You need to be logged in to use the AI assistant.' 
+      }]);
+      return;
+    }
+    
     setIsLoading(true);
 
     try {
@@ -156,46 +152,33 @@ const ChatWithNeema = () => {
         content: msg.text
       }));
 
-      const response = await aiService.generateResponse(userMessage, chatHistory);
+      // Generate response with context
+      const response = await aiService.generateResponse(userMessage, chatHistory, neemaContext);
       
-      // Process special commands
-      if (userMessage.toLowerCase().includes('calendar') || userMessage.toLowerCase().includes('schedule')) {
-        // Fetch calendar data if asked about calendar
-        const events = await calendarService.fetchTodayEvents();
-        setCalendarEvents(events);
+      // If message contains refresh/update requests, refresh AI context
+      if (userMessage.toLowerCase().includes('refresh') || 
+          userMessage.toLowerCase().includes('update') ||
+          userMessage.toLowerCase().includes('latest')) {
+        await refreshContext();
         
-        let eventText = 'Here are your events for today:\n';
-        if (events.length === 0) {
-          eventText = 'You have no events scheduled for today.';
-        } else {
-          events.forEach(event => {
-            const start = new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            eventText += `• ${start} - ${event.title}\n`;
-          });
-        }
-        
-        setMessages(prev => [...prev, { sender: 'Neema', text: response }, { sender: 'Neema', text: eventText }]);
-      } else if (userMessage.toLowerCase().includes('notion') || userMessage.toLowerCase().includes('notes')) {
-        // Fetch Notion data if asked about notes
-        const notes = await notionService.fetchNotionNotes();
-        setNotionNotes(notes);
-        
-        let notesText = 'Here are your recent notes:\n';
-        if (notes.length === 0) {
-          notesText = 'You don\'t have any notes yet.';
-        } else {
-          notes.forEach(note => {
-            notesText += `• ${note.title}\n`;
-          });
-        }
-        
-        setMessages(prev => [...prev, { sender: 'Neema', text: response }, { sender: 'Neema', text: notesText }]);
-      } else {
-        setMessages(prev => [...prev, { sender: 'Neema', text: response }]);
+        toast({
+          title: "Context updated",
+          description: "Now working with the latest information"
+        });
       }
+      
+      setMessages(prev => [...prev, { 
+        sender: 'Neema', 
+        text: response,
+        timestamp: new Date()
+      }]);
+      
     } catch (error) {
       console.error('Error getting AI response:', error);
-      setMessages(prev => [...prev, { sender: 'Neema', text: 'Sorry, I encountered an error. Please try again.' }]);
+      setMessages(prev => [...prev, { 
+        sender: 'Neema', 
+        text: 'Sorry, I encountered an error. Please try again.' 
+      }]);
     } finally {
       setIsLoading(false);
     }
@@ -204,7 +187,11 @@ const ChatWithNeema = () => {
   const handleSend = async () => {
     if (input.trim()) {
       const userMessage = input.trim();
-      setMessages(prev => [...prev, { sender: 'User', text: userMessage }]);
+      setMessages(prev => [...prev, { 
+        sender: 'User', 
+        text: userMessage,
+        timestamp: new Date()
+      }]);
       setInput('');
       handleAIResponse(userMessage);
     }
@@ -216,6 +203,34 @@ const ChatWithNeema = () => {
       handleSend();
     }
   };
+  
+  const handleRefreshContext = async () => {
+    setIsLoading(true);
+    
+    try {
+      await refreshContext();
+      
+      setMessages(prev => [...prev, { 
+        sender: 'Neema', 
+        text: 'I\'ve updated my understanding of your current tasks, emails, and calendar events.',
+        timestamp: new Date()
+      }]);
+      
+      toast({
+        title: "Context refreshed",
+        description: "AI assistant is now working with the latest information"
+      });
+    } catch (error) {
+      console.error('Error refreshing context:', error);
+      toast({
+        title: "Failed to refresh context",
+        description: "Please try again later",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Card className="h-full flex flex-col">
@@ -223,6 +238,15 @@ const ChatWithNeema = () => {
         <CardTitle className="text-lg flex justify-between items-center">
           <span>Chat with Neema</span>
           <div className="flex gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0"
+              onClick={handleRefreshContext}
+              disabled={isLoading || isContextLoading}
+            >
+              <RefreshCw className={`h-4 w-4 ${isLoading || isContextLoading ? 'animate-spin' : ''}`} />
+            </Button>
             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
               <Calendar className="h-4 w-4" />
             </Button>
@@ -246,7 +270,14 @@ const ChatWithNeema = () => {
                   : 'bg-pastel-sky/20 text-right'
               }`}
             >
-              <div className="text-xs font-medium text-muted-foreground mb-1">{msg.sender}</div>
+              <div className="text-xs font-medium text-muted-foreground mb-1">
+                {msg.sender}
+                {msg.timestamp && 
+                  <span className="ml-2">
+                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                }
+              </div>
               <div className="whitespace-pre-wrap">{msg.text}</div>
             </div>
           ))}
@@ -274,6 +305,7 @@ const ChatWithNeema = () => {
             variant={isListening ? "default" : "ghost"}
             className={`h-10 w-10 p-0 mr-2 ${isListening ? "bg-red-500 text-white hover:bg-red-600" : ""}`}
             onClick={toggleListening}
+            disabled={isLoading}
           >
             {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
           </Button>
@@ -283,7 +315,7 @@ const ChatWithNeema = () => {
             onKeyDown={handleKeyDown}
             placeholder={isListening ? "Listening..." : "Type a message..."}
             className="flex-1 mr-2"
-            disabled={isListening}
+            disabled={isListening || isLoading}
           />
           <Button 
             onClick={handleSend} 
