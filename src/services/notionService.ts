@@ -1,49 +1,178 @@
 import axios from 'axios';
 
-export interface NotionNote {
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_KEY = import.meta.env.VITE_API_KEY;
+const NOTION_API_KEY = import.meta.env.VITE_NOTION_API_KEY;
+
+export interface NotionPage {
   id: string;
   title: string;
-  content: string;
+  url: string;
   lastEdited: string;
+  createdTime: string;
+  icon?: string;
+  parentId?: string;
+  parentType?: 'workspace' | 'page' | 'database';
 }
 
-/**
- * Fetch notes from Notion
- */
-export const fetchNotionNotes = async (): Promise<NotionNote[]> => {
+export interface NotionDatabase {
+  id: string;
+  title: string;
+  url: string;
+  lastEdited: string;
+  createdTime: string;
+  icon?: string;
+  parentId?: string;
+  parentType?: 'workspace' | 'page';
+}
+
+export interface NotionBlock {
+  id: string;
+  type: string;
+  content: any;
+  hasChildren: boolean;
+}
+
+// Configure axios with the API key
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${API_KEY}`,
+    'X-Notion-API-Key': NOTION_API_KEY
+  }
+});
+
+// Check if Notion integration is connected
+export const checkNotionConnection = async (userId: string): Promise<boolean> => {
   try {
-    // In a real implementation, this would make an API call to your backend
-    // which would then use the Notion API with proper authentication
-    const response = await axios.get('/api/notion/notes');
+    const response = await api.get('/integrations/notion/status', {
+      params: { userId }
+    });
+    return response.data.connected;
+  } catch (error) {
+    console.error('Error checking Notion connection:', error);
+    return false;
+  }
+};
+
+// Connect to Notion (returns auth URL to redirect user)
+export const initiateNotionConnection = async (
+  userId: string, 
+  redirectUrl: string
+): Promise<string> => {
+  try {
+    const response = await api.post('/integrations/notion/connect', {
+      userId,
+      redirectUrl
+    });
+    return response.data.authUrl;
+  } catch (error) {
+    console.error('Error initiating Notion connection:', error);
+    throw new Error('Failed to connect to Notion');
+  }
+};
+
+// Complete Notion OAuth connection (after user authorized)
+export const completeNotionConnection = async (
+  userId: string,
+  code: string
+): Promise<boolean> => {
+  try {
+    const response = await api.post('/integrations/notion/callback', {
+      userId,
+      code
+    });
+    return response.data.success;
+  } catch (error) {
+    console.error('Error completing Notion connection:', error);
+    return false;
+  }
+};
+
+// Fetch user's Notion pages
+export const fetchNotionPages = async (userId: string): Promise<NotionPage[]> => {
+  try {
+    const response = await api.get('/integrations/notion/pages', {
+      params: { userId }
+    });
     return response.data;
   } catch (error) {
-    console.error('Error fetching Notion notes:', error);
+    console.error('Error fetching Notion pages:', error);
     return [];
   }
 };
 
-/**
- * Search Notion notes
- */
-export const searchNotionNotes = async (query: string): Promise<NotionNote[]> => {
+// Fetch user's Notion databases
+export const fetchNotionDatabases = async (userId: string): Promise<NotionDatabase[]> => {
   try {
-    const response = await axios.get(`/api/notion/search?q=${encodeURIComponent(query)}`);
+    const response = await api.get('/integrations/notion/databases', {
+      params: { userId }
+    });
     return response.data;
   } catch (error) {
-    console.error('Error searching Notion notes:', error);
+    console.error('Error fetching Notion databases:', error);
     return [];
   }
 };
 
-/**
- * Create a new note in Notion
- */
-export const createNotionNote = async (title: string, content: string): Promise<NotionNote | null> => {
+// Fetch blocks from specific page
+export const fetchNotionPageBlocks = async (pageId: string): Promise<NotionBlock[]> => {
   try {
-    const response = await axios.post('/api/notion/notes', { title, content });
+    const response = await api.get(`/integrations/notion/pages/${pageId}/blocks`);
     return response.data;
   } catch (error) {
-    console.error('Error creating Notion note:', error);
+    console.error('Error fetching Notion page blocks:', error);
+    return [];
+  }
+};
+
+// Create a new Notion page
+export const createNotionPage = async (
+  userId: string,
+  title: string,
+  content: any,
+  parentId?: string,
+  parentType: 'page' | 'database' = 'page'
+): Promise<NotionPage | null> => {
+  try {
+    const response = await api.post('/integrations/notion/pages', {
+      userId,
+      title,
+      content,
+      parentId,
+      parentType
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating Notion page:', error);
     return null;
+  }
+};
+
+// Search Notion by query
+export const searchNotion = async (
+  userId: string,
+  query: string
+): Promise<Array<NotionPage | NotionDatabase>> => {
+  try {
+    const response = await api.get('/integrations/notion/search', {
+      params: { userId, query }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error searching Notion:', error);
+    return [];
+  }
+};
+
+// Disconnect Notion
+export const disconnectNotion = async (userId: string): Promise<boolean> => {
+  try {
+    const response = await api.post('/integrations/notion/disconnect', { userId });
+    return response.data.success;
+  } catch (error) {
+    console.error('Error disconnecting Notion:', error);
+    return false;
   }
 }; 
