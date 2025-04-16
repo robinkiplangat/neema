@@ -3,16 +3,22 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-react";
-import Index from "./pages/Index";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import JoinWaitlist from "./pages/JoinWaitlist";
-import Dashboard from "./pages/Dashboard";
-import Timesheet from "./pages/Timesheet";
-import KanbanBoard from "./pages/KanbanBoard";
-import NotFound from "./pages/NotFound";
-import Settings from "./pages/Settings";
+import { ClerkProvider, SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
+import { useEffect } from "react";
+import { AIProvider } from "@/context/AIContext";
+import { lazy, Suspense } from "react";
+import * as syncService from "@/services/syncService";
+
+// Lazy-loaded components
+const Index = lazy(() => import("./pages/Index"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const JoinWaitlist = lazy(() => import("./pages/JoinWaitlist"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Timesheet = lazy(() => import("./pages/Timesheet"));
+const KanbanBoard = lazy(() => import("./pages/KanbanBoard"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Settings = lazy(() => import("./pages/Settings"));
 
 const queryClient = new QueryClient();
 
@@ -28,6 +34,32 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       </SignedOut>
     </>
   );
+};
+
+// Sync service setup component
+const SyncManager = () => {
+  const { user } = useUser();
+  const userId = user?.id || '';
+
+  useEffect(() => {
+    if (userId) {
+      // Register device
+      syncService.registerDevice(userId);
+      
+      // Set up periodic sync
+      const cleanup = syncService.setupPeriodicSync(userId, 5); // Sync every 5 minutes
+      
+      // Set up connectivity handlers
+      const connCleanup = syncService.setupSyncConnectivityHandlers(userId);
+      
+      return () => {
+        cleanup();
+        connCleanup();
+      };
+    }
+  }, [userId]);
+
+  return null;
 };
 
 const App = () => {
@@ -56,56 +88,63 @@ const App = () => {
         afterSignInUrl="/dashboard"
         afterSignUpUrl="/joinwaitlist"
       >
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public routes */}
-              <Route path="/" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/joinwaitlist" element={<JoinWaitlist />} />
-              
-              {/* Protected routes */}
-              <Route 
-                path="/dashboard" 
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/timesheet" 
-                element={
-                  <ProtectedRoute>
-                    <Timesheet />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/kanban" 
-                element={
-                  <ProtectedRoute>
-                    <KanbanBoard />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/settings" 
-                element={
-                  <ProtectedRoute>
-                    <Settings />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* Not found */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <AIProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <SignedIn>
+                <SyncManager />
+              </SignedIn>
+              <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+                <Routes>
+                  {/* Public routes */}
+                  <Route path="/" element={<Index />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/joinwaitlist" element={<JoinWaitlist />} />
+                  
+                  {/* Protected routes */}
+                  <Route 
+                    path="/dashboard" 
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/timesheet" 
+                    element={
+                      <ProtectedRoute>
+                        <Timesheet />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/kanban" 
+                    element={
+                      <ProtectedRoute>
+                        <KanbanBoard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/settings" 
+                    element={
+                      <ProtectedRoute>
+                        <Settings />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  
+                  {/* Not found */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </TooltipProvider>
+        </AIProvider>
       </ClerkProvider>
     </QueryClientProvider>
   );

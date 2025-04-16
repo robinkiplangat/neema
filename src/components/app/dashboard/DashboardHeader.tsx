@@ -1,8 +1,12 @@
-import TimeTracker from "../TimeTracker";
-import { useUser } from "@clerk/clerk-react";
-import { useState, useEffect } from "react";
-import { useRandomQuote } from "@/services/quoteService";
-import { Quote } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Play, Square, PlusCircle, Clock, MoreVertical } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface DashboardHeaderProps {
   isTracking: boolean;
@@ -10,47 +14,67 @@ interface DashboardHeaderProps {
   onStopTimer: () => void;
 }
 
-const DashboardHeader = ({ isTracking, onStartTimer, onStopTimer }: DashboardHeaderProps) => {
-  const { user } = useUser();
-  const firstName = user?.firstName || "User";
-  const email = user?.primaryEmailAddress?.emailAddress || "";
-  const quote = useRandomQuote(); // This will update hourly
-  
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good morning";
-    if (hour < 18) return "Good afternoon";
-    return "Good evening";
-  };
-  
+const DashboardHeader = ({
+  isTracking,
+  onStartTimer,
+  onStopTimer,
+}: DashboardHeaderProps) => {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{getGreeting()}, {firstName}</h1>
-          <p className="text-muted-foreground mt-1">
-            {email} • Here's an overview of your workspace today
-          </p>
+    <Card className="bg-white border shadow-sm">
+      <CardContent className="p-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 className="text-lg font-medium mb-1">Current Focus</h2>
+            <p className="text-muted-foreground text-sm">What are you working on?</p>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            {isTracking ? (
+              <>
+                <div className="text-lg font-mono mr-2">00:05:23</div>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={onStopTimer}
+                  className="gap-1"
+                >
+                  <Square className="h-4 w-4" />
+                  Stop
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={onStartTimer}
+                className="gap-1"
+              >
+                <Play className="h-4 w-4" />
+                Start Timer
+              </Button>
+            )}
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="h-8 w-8">
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Create Task
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Clock className="h-4 w-4 mr-2" />
+                  View Time Logs
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-        
-        <TimeTracker 
-          isTracking={isTracking}
-          onStartTimer={onStartTimer}
-          onStopTimer={onStopTimer}
-        />
-      </div>
-      
-      {/* Quote Section */}
-      <div className="bg-pastel-sky/20 rounded-lg p-4 border border-pastel-sky/30 flex items-start gap-3">
-        <div className="bg-pastel-sky/30 rounded-full p-2 mt-0.5">
-          <Quote className="h-4 w-4 text-neema-primary" />
-        </div>
-        <div>
-          <p className="font-medium text-neema-primary">{quote.quote}</p>
-          <p className="text-sm text-muted-foreground mt-1">→ {quote.explanation}</p>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

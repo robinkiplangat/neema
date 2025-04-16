@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import AppLayout from "@/components/app/AppLayout";
 import PageTitle from "@/components/shared/PageTitle";
 import { useToast } from "@/hooks/use-toast";
@@ -23,7 +23,7 @@ const Dashboard = () => {
     setIsTracking(true);
     toast({
       title: "Timer started",
-      description: "Tracking time for Content Creation",
+      description: "Tracking time for current task",
     });
   };
   
@@ -31,7 +31,7 @@ const Dashboard = () => {
     setIsTracking(false);
     toast({
       title: "Timer stopped",
-      description: "Tracked 00:05:23 for Content Creation",
+      description: "Time tracked successfully",
     });
   };
 
@@ -42,11 +42,11 @@ const Dashboard = () => {
           <PageTitle title="Dashboard | Neema" />
           
           <div className="space-y-6">
-            <div className="bg-white/80 p-4 rounded-xl border border-neema-secondary/20 mb-6 flex items-start gap-4">
+            <div className="bg-white/80 p-4 rounded-xl border border-neema-secondary/20 mb-6 flex items-start gap-4 shadow-sm">
               <div className="text-2xl">💡</div>
-              <div>
-                <h3 className="text-lg font-medium mb-1">Neema's {getGreeting()} Brief</h3>
-                <p className="text-muted-foreground">You have 3 high-priority tasks and a client call at 2 PM today. Based on your productive patterns, I've scheduled a focus block from 9-11 AM.</p>
+              <div className="flex-1">
+                <h3 className="text-lg font-medium mb-1">{getGreeting()}, {firstName}</h3>
+                <p className="text-muted-foreground text-sm">Focus on your top priorities today. I've organized your schedule and tasks.</p>
               </div>
             </div>
             

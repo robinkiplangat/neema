@@ -1,69 +1,156 @@
 import axios from 'axios';
 
-interface ChatMessage {
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_KEY = import.meta.env.VITE_API_KEY;
+const AI_API_KEY = import.meta.env.VITE_AI_API_KEY;
+const AI_MODEL = import.meta.env.VITE_AI_MODEL || 'gpt-4';
+
+interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
 }
 
-// Environment variables
-const OPENROUTER_ENDPOINT = import.meta.env.VITE_OPENROUTER_ENDPOINT || 'https://openrouter.ai/api/v1/chat/completions';
-const DEFAULT_MODEL = import.meta.env.VITE_DEFAULT_MODEL || 'meta-llama/llama-4-maverick:free';
-const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
+interface AIContext {
+  tasks?: any[];
+  emails?: any[];
+  events?: any[];
+  userPreferences?: Record<string, any>;
+  userProfile?: Record<string, any>;
+  [key: string]: any;
+}
 
-export const sendMessageToAI = async (messages: ChatMessage[]): Promise<string> => {
-  if (!OPENROUTER_API_KEY) {
-    console.error('OpenRouter API key is not configured');
-    throw new Error('AI service is not properly configured. Please check your environment variables.');
+// Configure axios with the API key
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${API_KEY}`,
+    'X-AI-API-Key': AI_API_KEY
   }
+});
 
+export const generateResponse = async (
+  message: string,
+  history: Message[] = [],
+  context?: AIContext
+): Promise<string> => {
   try {
-    const response = await axios.post(
-      OPENROUTER_ENDPOINT,
-      {
-        model: DEFAULT_MODEL,
-        messages: messages,
-        max_tokens: 1000
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${OPENROUTER_API_KEY}`
-        }
-      }
-    );
-
-    if (!response.data?.choices?.[0]?.message?.content) {
-      console.error('Unexpected response format from AI service:', response.data);
-      throw new Error('Received invalid response format from AI service');
-    }
-
-    return response.data.choices[0].message.content;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('AI Service Error:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data
-      });
-      
-      if (error.response?.status === 401) {
-        throw new Error('Invalid API key for AI service');
-      } else if (error.response?.status === 429) {
-        throw new Error('Rate limit exceeded for AI service');
-      }
-    }
+    const response = await api.post(`/ai/chat`, {
+      message,
+      history,
+      context,
+      model: AI_MODEL
+    });
     
-    console.error('Error sending message to AI:', error);
-    throw new Error('Failed to get response from AI service. Please try again later.');
+    return response.data.response;
+  } catch (error) {
+    console.error('Error generating AI response:', error);
+    return 'Sorry, I encountered an error. Please try again.';
   }
 };
 
-export const generateResponse = async (userMessage: string, chatHistory: ChatMessage[] = []): Promise<string> => {
-  const messages: ChatMessage[] = [
-    { role: 'system', content: 'You are Neema, an AI assistant. You help users with their work, scheduling, and productivity. You can also access information from Google Calendar, Notion, and LinkedIn when requested. Be concise, helpful, and friendly.' },
-    ...chatHistory,
-    { role: 'user', content: userMessage }
-  ];
+export const generateTaskSuggestions = async (
+  userId: string,
+  context?: AIContext
+): Promise<{ title: string; priority: string; dueDate?: string }[]> => {
+  try {
+    const response = await api.post(`/ai/suggest-tasks`, {
+      userId,
+      context,
+      model: AI_MODEL
+    });
+    
+    return response.data.suggestions;
+  } catch (error) {
+    console.error('Error generating task suggestions:', error);
+    return [];
+  }
+};
 
-  return sendMessageToAI(messages);
+export const analyzeProductivity = async (
+  userId: string,
+  timeRange: { start: string; end: string },
+  data: any[]
+): Promise<any> => {
+  try {
+    const response = await api.post(`/ai/analyze-productivity`, {
+      userId,
+      timeRange,
+      data,
+      model: AI_MODEL
+    });
+    
+    return response.data.analysis;
+  } catch (error) {
+    console.error('Error analyzing productivity:', error);
+    return null;
+  }
+};
+
+export const summarizeEmails = async (
+  emails: any[],
+  maxLength?: number
+): Promise<string> => {
+  try {
+    const response = await api.post(`/ai/summarize-emails`, {
+      emails,
+      maxLength,
+      model: AI_MODEL
+    });
+    
+    return response.data.summary;
+  } catch (error) {
+    console.error('Error summarizing emails:', error);
+    return 'Unable to generate email summary.';
+  }
+};
+
+export const prioritizeTaskList = async (
+  tasks: any[],
+  context?: AIContext
+): Promise<any[]> => {
+  try {
+    const response = await api.post(`/ai/prioritize-tasks`, {
+      tasks,
+      context,
+      model: AI_MODEL
+    });
+    
+    return response.data.prioritizedTasks;
+  } catch (error) {
+    console.error('Error prioritizing tasks:', error);
+    return tasks; // Return original tasks on error
+  }
+};
+
+export const generateDailySummary = async (
+  userId: string,
+  date?: string
+): Promise<{
+  greeting: string;
+  focusAreas: string[];
+  topTasks: any[];
+  upcomingEvents: any[];
+  insights: string;
+}> => {
+  try {
+    const today = date || new Date().toISOString().split('T')[0];
+    
+    const response = await api.post(`/ai/daily-summary`, {
+      userId,
+      date: today,
+      model: AI_MODEL
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error generating daily summary:', error);
+    return {
+      greeting: 'Good day',
+      focusAreas: [],
+      topTasks: [],
+      upcomingEvents: [],
+      insights: 'Unable to generate insights at this time.'
+    };
+  }
 }; 
