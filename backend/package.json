@@ -10,15 +10,16 @@
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "^4.10.2",
-    "axios": "^1.4.0",
+    "@notionhq/client": "^2.3.0",
+    "axios": "^1.9.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "express-rate-limit": "^6.9.0",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^6.11.2",
     "express-validator": "^7.0.1",
     "googleapis": "^148.0.0",
-    "helmet": "^7.0.0",
-    "mongoose": "^7.4.3",
+    "helmet": "^7.2.0",
+    "mongoose": "^7.8.6",
     "mongoose-paginate-v2": "^1.7.31"
   },
   "devDependencies": {

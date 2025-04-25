@@ -1,18 +1,31 @@
-# Welcome to your Lovable project
+# Welcome to your Neema project
+
+## What is Neema?
+
+Neema is your AI co-pilot for solo founders and creators. It's designed to help you track progress, manage tasks, and stay in flow effortlessly.
+
+## Features
+
+*   A cloud-based development environment accessible from any device.
+*   AI coding assistance using Gemini models.
+*   The ability to import existing repos and customize your workspace.
+*   Support for popular frameworks and languages, including (but not limited to!) Go, Java, .NET, Python, Android, Flutter, and web (React, Angular, Vue.js, and more).
+*   Built-in support for emulation, testing, and debugging.
+*   Real-time collaboration features.
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/9f9e03a5-6368-4684-8b47-7ec1dcc3acae
+**URL**: https://neema.ai/projects/9f9e03a5-6368-4684-8b47-7ec1dcc3acae
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
+**Use Neema**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9f9e03a5-6368-4684-8b47-7ec1dcc3acae) and start prompting.
+Simply visit the [Neema Project](https://neema.ai/projects/9f9e03a5-6368-4684-8b47-7ec1dcc3acae) and start prompting.
 
-Changes made via Lovable will be committed automatically to this repo.
+Changes made via Neema will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
@@ -61,13 +74,3 @@ This project is built with:
 - Tailwind CSS
 
 ## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/9f9e03a5-6368-4684-8b47-7ec1dcc3acae) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)

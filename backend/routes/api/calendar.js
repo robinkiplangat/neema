@@ -3,77 +3,92 @@ const router = express.Router();
 const { google } = require('googleapis');
 const { OAuth2 } = google.auth;
 
-// Mock data for development (until Google OAuth is fully implemented)
-const mockEvents = [
-  {
-    id: '1',
-    title: 'Team Meeting',
-    start: new Date(new Date().setHours(10, 0, 0, 0)).toISOString(),
-    end: new Date(new Date().setHours(11, 0, 0, 0)).toISOString(),
-    description: 'Weekly team sync to discuss project progress',
-    location: 'Conference Room A'
-  },
-  {
-    id: '2',
-    title: 'Client Call',
-    start: new Date(new Date().setHours(13, 30, 0, 0)).toISOString(),
-    end: new Date(new Date().setHours(14, 0, 0, 0)).toISOString(),
-    description: 'Discuss project requirements with client',
-    location: 'Zoom'
-  },
-  {
-    id: '3',
-    title: 'Review Design Mockups',
-    start: new Date(new Date().setHours(15, 0, 0, 0)).toISOString(),
-    end: new Date(new Date().setHours(16, 0, 0, 0)).toISOString(),
-    description: 'Review and provide feedback on design mockups',
-    location: null
+// TODO: Configure OAuth2 client - Ensure these are set in your environment variables
+const oauth2Client = new OAuth2(
+  process.env.GCAL_CLIENT_ID,
+  process.env.GCAL_CLIENT_SECRET,
+  process.env.GCAL_REDIRECT_URI // e.g., 'http://localhost:5000/api/auth/google/callback'
+);
+
+// Middleware to set credentials for the user (replace with your actual auth logic)
+// This assumes you have middleware that attaches the user object (with tokens) to req
+const setUserCredentials = async (req, res, next) => {
+  // TODO: Replace this with actual logic to retrieve the user's stored refresh token
+  // This might involve querying your database based on req.user.id or similar
+  const userRefreshToken = req.user?.googleRefreshToken; // Example: Get refresh token from user object
+
+  if (!userRefreshToken) {
+    // If no token, maybe redirect to auth or return an error
+    // For now, we'll proceed, but API calls will likely fail without auth
+    // return res.status(401).json({ message: 'User not authenticated with Google Calendar' });
+    console.warn('No Google refresh token found for user. API calls may fail.');
+    // You might want to handle this more gracefully, e.g., by initiating the OAuth flow
+  } else {
+      oauth2Client.setCredentials({
+        refresh_token: userRefreshToken,
+      });
+      // Refresh the access token if necessary (googleapis library often handles this automatically)
+      try {
+         // Optionally force a refresh token request to get a new access token
+         // await oauth2Client.getAccessToken();
+         // console.log('Google Access Token refreshed successfully.');
+      } catch (error) {
+         console.error('Error refreshing Google access token:', error.message);
+         // Handle token refresh errors (e.g., token revoked)
+         // Maybe clear the stored token and prompt re-authentication
+         return res.status(401).json({ message: 'Failed to refresh Google token. Please re-authenticate.' });
+      }
   }
-];
+  next();
+};
+
+// Apply the middleware to all routes in this file
+router.use(setUserCredentials);
 
 // Get calendar events
 router.get('/events', async (req, res) => {
   try {
-    // In production, use Google Calendar API
-    // const oauth2Client = new OAuth2(
-    //   process.env.GCAL_CLIENT_ID,
-    //   process.env.GCAL_CLIENT_SECRET,
-    //   'http://localhost:5000/api/auth/google/callback'
-    // );
-    
-    // oauth2Client.setCredentials({
-    //   refresh_token: req.user.refreshToken // Assuming you have user auth
-    // });
-    
-    // const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
-    // const response = await calendar.events.list({
-    //   calendarId: 'primary',
-    //   timeMin: (new Date()).toISOString(),
-    //   maxResults: 10,
-    //   singleEvents: true,
-    //   orderBy: 'startTime',
-    // });
-    
-    // const events = response.data.items.map(event => ({
-    //   id: event.id,
-    //   title: event.summary,
-    //   start: event.start.dateTime || event.start.date,
-    //   end: event.end.dateTime || event.end.date,
-    //   description: event.description,
-    //   location: event.location
-    // }));
-    
-    // For development, use mock data
-    // Ensure we're always returning an array
-    if (!Array.isArray(mockEvents)) {
-      console.error('mockEvents is not an array:', mockEvents);
-      return res.json([]);
+    const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+
+    // Basic parameters - adjust as needed (e.g., based on req.query for date ranges)
+    const timeMin = req.query.start || (new Date()).toISOString();
+    const timeMax = req.query.end; // Optional end date
+    const maxResults = req.query.maxResults || 10;
+
+    const params = {
+        calendarId: 'primary',
+        timeMin: timeMin,
+        maxResults: parseInt(maxResults, 10),
+        singleEvents: true,
+        orderBy: 'startTime',
+    };
+
+    if (timeMax) {
+        params.timeMax = timeMax;
     }
-    
-    return res.json(mockEvents);
+
+    const response = await calendar.events.list(params);
+
+    const events = response.data.items.map(event => ({
+      id: event.id,
+      title: event.summary || 'No Title',
+      start: event.start?.dateTime || event.start?.date, // Handle all-day events
+      end: event.end?.dateTime || event.end?.date,     // Handle all-day events
+      description: event.description,
+      location: event.location,
+      // Add other relevant fields: attendees, status, etc.
+    }));
+
+    res.json(events);
   } catch (error) {
-    console.error('Error fetching calendar events:', error);
-    return res.status(500).json({ message: 'Error fetching calendar events' });
+    console.error('Error fetching Google Calendar events:', error.message);
+    // Check for specific auth errors if needed
+    if (error.message && error.message.includes('invalid_grant')) {
+        // This often means the refresh token is bad or revoked
+        // TODO: Implement logic to clear the user's stored token and prompt re-auth
+        return res.status(401).json({ message: 'Google authentication error. Please reconnect your calendar.' });
+    }
+    res.status(500).json({ message: 'Error fetching Google Calendar events' });
   }
 });
 
@@ -81,58 +96,57 @@ router.get('/events', async (req, res) => {
 router.post('/events', async (req, res) => {
   try {
     const { title, start, end, description, location } = req.body;
-    
-    // Validate required fields
+
+    // Validate required fields (add more validation as needed)
     if (!title || !start || !end) {
       return res.status(400).json({ message: 'Title, start, and end are required' });
     }
-    
-    // In production, use Google Calendar API
-    // const oauth2Client = new OAuth2(
-    //   process.env.GCAL_CLIENT_ID,
-    //   process.env.GCAL_CLIENT_SECRET,
-    //   'http://localhost:5000/api/auth/google/callback'
-    // );
-    
-    // oauth2Client.setCredentials({
-    //   refresh_token: req.user.refreshToken // Assuming you have user auth
-    // });
-    
-    // const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
-    // const event = {
-    //   summary: title,
-    //   description,
-    //   location,
-    //   start: {
-    //     dateTime: start,
-    //     timeZone: 'America/New_York',
-    //   },
-    //   end: {
-    //     dateTime: end,
-    //     timeZone: 'America/New_York',
-    //   },
-    // };
-    
-    // const response = await calendar.events.insert({
-    //   calendarId: 'primary',
-    //   resource: event,
-    // });
-    
-    // For development, return mock data
-    const newEvent = {
-      id: Date.now().toString(),
-      title,
-      start,
-      end,
-      description,
-      location
+
+    const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+
+    const event = {
+      summary: title,
+      description: description,
+      location: location,
+      start: {
+        dateTime: start, // Assuming start is in ISO format e.g., '2024-07-28T10:00:00-04:00'
+        // TODO: Determine TimeZone dynamically or from user settings
+        timeZone: 'America/New_York',
+      },
+      end: {
+        dateTime: end, // Assuming end is in ISO format
+        timeZone: 'America/New_York',
+      },
+      // Add other fields like attendees if needed
+      // attendees: [{ email: 'user@example.com' }],
     };
-    
-    return res.status(201).json(newEvent);
+
+    const response = await calendar.events.insert({
+      calendarId: 'primary',
+      resource: event,
+    });
+
+    // Map the created event to the format expected by the frontend
+    const createdEvent = {
+      id: response.data.id,
+      title: response.data.summary,
+      start: response.data.start?.dateTime || response.data.start?.date,
+      end: response.data.end?.dateTime || response.data.end?.date,
+      description: response.data.description,
+      location: response.data.location,
+    };
+
+    res.status(201).json(createdEvent);
+
   } catch (error) {
-    console.error('Error creating calendar event:', error);
-    return res.status(500).json({ message: 'Error creating calendar event' });
+    console.error('Error creating Google Calendar event:', error.message);
+     if (error.message && error.message.includes('invalid_grant')) {
+        return res.status(401).json({ message: 'Google authentication error. Please reconnect your calendar.' });
+    }
+    res.status(500).json({ message: 'Error creating Google Calendar event' });
   }
 });
 
-module.exports = router; 
+// TODO: Add routes for updating and deleting events if needed
+
+module.exports = router;
