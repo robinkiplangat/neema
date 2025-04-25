@@ -3,7 +3,7 @@ const { validationResult } = require('express-validator');
 const aiService = require('../services/aiService');
 
 // Get all tasks for a user
-exports.getTasks = async (req, res) => {
+const getTasks = async (req, res) => {
   try {
     const { page = 1, limit = 20, status, priority, projectId } = req.query;
     
@@ -30,7 +30,7 @@ exports.getTasks = async (req, res) => {
 };
 
 // Get a specific task
-exports.getTask = async (req, res) => {
+const getTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id)
       .populate('project')
@@ -53,7 +53,7 @@ exports.getTask = async (req, res) => {
 };
 
 // Create a task
-exports.createTask = async (req, res) => {
+const createTask = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -91,7 +91,7 @@ exports.createTask = async (req, res) => {
 };
 
 // Update a task
-exports.updateTask = async (req, res) => {
+const updateTask = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -148,7 +148,7 @@ exports.updateTask = async (req, res) => {
 };
 
 // Delete a task
-exports.deleteTask = async (req, res) => {
+const deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
     
@@ -171,7 +171,7 @@ exports.deleteTask = async (req, res) => {
 };
 
 // Smart prioritize tasks
-exports.prioritizeTasks = async (req, res) => {
+const prioritizeTasks = async (req, res) => {
   try {
     const { taskIds, includeCalendar = true } = req.body;
     
@@ -200,4 +200,13 @@ exports.prioritizeTasks = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
-}; 
+};
+
+module.exports = {
+  getTasks,
+  getTask,
+  createTask,
+  updateTask,
+  deleteTask,
+  prioritizeTasks
+};

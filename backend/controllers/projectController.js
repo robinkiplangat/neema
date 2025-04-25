@@ -3,7 +3,7 @@ const Task = require('../models/Task');
 const { validationResult } = require('express-validator');
 
 // Get all projects for a user
-exports.getProjects = async (req, res) => {
+const getProjects = async (req, res) => {
   try {
     const { page = 1, limit = 20, status } = req.query;
     
@@ -36,7 +36,7 @@ exports.getProjects = async (req, res) => {
 };
 
 // Get a specific project
-exports.getProject = async (req, res) => {
+const getProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id)
       .populate({
@@ -62,7 +62,7 @@ exports.getProject = async (req, res) => {
 };
 
 // Create a project
-exports.createProject = async (req, res) => {
+const createProject = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -98,7 +98,7 @@ exports.createProject = async (req, res) => {
 };
 
 // Update a project
-exports.updateProject = async (req, res) => {
+const updateProject = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

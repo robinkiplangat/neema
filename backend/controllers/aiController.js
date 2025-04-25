@@ -3,7 +3,7 @@ const Task = require('../models/Task');
 const Note = require('../models/Note');
 
 // Generate email reply
-exports.generateEmailReply = async (req, res) => {
+const generateEmailReply = async (req, res) => {
   try {
     const { emailContent, userContext } = req.body;
     
@@ -34,7 +34,7 @@ exports.generateEmailReply = async (req, res) => {
 };
 
 // Generate LinkedIn post
-exports.generateLinkedInPost = async (req, res) => {
+const generateLinkedInPost = async (req, res) => {
   try {
     const { topic, style = 'professional', length = 'medium' } = req.body;
     
@@ -72,7 +72,7 @@ exports.generateLinkedInPost = async (req, res) => {
 };
 
 // Prioritize tasks
-exports.prioritizeTasks = async (req, res) => {
+const prioritizeTasks = async (req, res) => {
   try {
     const { taskIds, includeCalendar = true } = req.body;
     
@@ -108,7 +108,7 @@ exports.prioritizeTasks = async (req, res) => {
 };
 
 // Summarize note
-exports.summarizeNote = async (req, res) => {
+const summarizeNote = async (req, res) => {
   try {
     const { noteId, content } = req.body;
     
