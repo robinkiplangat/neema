@@ -182,7 +182,7 @@ const updateNote = async (req, res) => {
 };
 
 // Delete a note (archive it)
-exports.deleteNote = async (req, res) => {
+const deleteNote = async (req, res) => {
   try {
     const note = await Note.findById(req.params.id);
     
@@ -207,7 +207,7 @@ exports.deleteNote = async (req, res) => {
 };
 
 // Permanently delete a note
-exports.permanentlyDeleteNote = async (req, res) => {
+const permanentlyDeleteNote = async (req, res) => {
   try {
     const note = await Note.findById(req.params.id);
     
@@ -230,7 +230,7 @@ exports.permanentlyDeleteNote = async (req, res) => {
 };
 
 // Summarize a note
-exports.summarizeNote = async (req, res) => {
+const summarizeNote = async (req, res) => {
   try {
     const note = await Note.findById(req.params.id);
     
@@ -259,3 +259,12 @@ exports.summarizeNote = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 }; 
+module.exports = {
+  getNotes,
+  getNote,
+  createNote,
+  updateNote,
+  deleteNote,
+  permanentlyDeleteNote,
+  summarizeNote
+};

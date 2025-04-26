@@ -153,3 +153,9 @@ const summarizeNote = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 }; 
+module.exports = {
+  generateEmailReply,
+  generateLinkedInPost,
+  prioritizeTasks,
+  summarizeNote
+};

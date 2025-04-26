@@ -140,7 +140,7 @@ const disconnectIntegration = async (req, res) => {
 };
 
 // Get user stats
-exports.getUserStats = async (req, res) => {
+const getUserStats = async (req, res) => {
   try {
     // Import models here to avoid circular dependencies
     const Task = require('../models/Task');
@@ -182,3 +182,11 @@ exports.getUserStats = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 }; 
+module.exports = {
+  getCurrentUser,
+  updatePreferences,
+  connectIntegration,
+  disconnectIntegration,
+  getUserStats
+};
+
