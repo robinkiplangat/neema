@@ -190,7 +190,7 @@ router.get('/connections/search', async (req, res) => {
 
 // GET /integrations/linkedin/feed - Placeholder (Complex)
 router.get('/feed', async (req, res) => {
-    console.warn('Fetching a user's LinkedIn feed via API is complex and may have limitations.');
+    console.warn("Fetching a user's LinkedIn feed via API is complex and may have limitations.");
     // This typically involves fetching posts from connections, companies followed etc. Requires multiple API calls and aggregation.
     // Refer to LinkedIn's Feed API documentation if available under your developer access level.
     res.status(501).json({ message: 'Fetching LinkedIn feed is not implemented.' });

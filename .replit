@@ -1,0 +1,7 @@
+run = "bash deploy.sh"
+
+# Optional: Set the language for syntax highlighting in the Replit editor
+language = "bash"
+
+# Optional: Set the entrypoint for the Replit shell
+entrypoint = "deploy.sh"

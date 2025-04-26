@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Client, LogLevel } = require('@notionhq/client');
 const axios = require('axios'); 
-const User = require('../../models/User'); // Adjust path if needed
+const User = require('../models/User');
 
 // Use environment variables intended for backend
 const NOTION_CLIENT_ID = process.env.NOTION_CLIENT_ID;

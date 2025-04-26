@@ -1,14 +1,18 @@
 const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
 const User = require('../models/User'); // Adjust path if needed
 
-// Clerk middleware options (configure as needed)
+// Clerk middleware options (customize only if needed)
+// Most deployments do not require options here unless using multi-tenant or advanced JWT settings.
+// See: https://clerk.com/docs/reference/server/clerk-express-require-auth
 const clerkAuthOptions = {
-  // apiKey: process.env.CLERK_SECRET_KEY, // Handled by SDK if env var is set
-  // authorizedParties: [],
-  // jwtKey: '',
-  // frontendApi: '',
-  // publishableKey: '',
+  // Example: restrict to specific authorized parties (audiences)
+  // authorizedParties: ['your-frontend-app-domain'],
+  // Example: override API key (usually not needed)
+  // apiKey: process.env.CLERK_SECRET_KEY,
 };
+
+// Clerk authentication only (protects route, attaches req.auth)
+const clerkAuth = ClerkExpressRequireAuth(clerkAuthOptions);
 
 // Middleware to verify Clerk session and load user from DB
 const loadUserFromClerk = async (req, res, next) => {
@@ -47,12 +51,17 @@ const loadUserFromClerk = async (req, res, next) => {
   }
 };
 
-// Export a combined middleware array
-// ClerkExpressRequireAuth handles JWT verification and attaches req.auth
-// loadUserFromClerk fetches the corresponding DB record and attaches req.dbUser
-const requireAuthAndLoadUser = [
-    ClerkExpressRequireAuth(clerkAuthOptions),
-    loadUserFromClerk 
-];
+// Combined middleware: Clerk auth + DB user loading
+const requireAuthAndLoadUser = [clerkAuth, loadUserFromClerk];
 
-module.exports = { requireAuthAndLoadUser };
+/**
+ * Exports:
+ * - clerkAuth: Only Clerk JWT/session validation (use for simple auth)
+ * - loadUserFromClerk: Attach DB user to req (use after clerkAuth)
+ * - requireAuthAndLoadUser: [clerkAuth, loadUserFromClerk] as a convenience array
+ */
+module.exports = {
+  clerkAuth,
+  loadUserFromClerk,
+  requireAuthAndLoadUser
+};

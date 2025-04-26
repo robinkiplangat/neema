@@ -149,7 +149,7 @@ const updateProject = async (req, res) => {
 };
 
 // Delete a project
-exports.deleteProject = async (req, res) => {
+const deleteProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     
@@ -179,7 +179,7 @@ exports.deleteProject = async (req, res) => {
 };
 
 // Get project tasks
-exports.getProjectTasks = async (req, res) => {
+const getProjectTasks = async (req, res) => {
   try {
     const { page = 1, limit = 50, status } = req.query;
     
@@ -212,4 +212,12 @@ exports.getProjectTasks = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
-}; 
+};
+module.exports = {
+  getProjects,
+  getProject,
+  createProject,
+  updateProject,
+  deleteProject,
+  getProjectTasks
+};
