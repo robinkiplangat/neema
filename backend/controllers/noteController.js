@@ -3,7 +3,7 @@ const { validationResult } = require('express-validator');
 const aiService = require('../services/aiService');
 
 // Get all notes for a user
-exports.getNotes = async (req, res) => {
+const getNotes = async (req, res) => {
   try {
     const { page = 1, limit = 20, search, tags, projectId } = req.query;
     
@@ -48,7 +48,7 @@ exports.getNotes = async (req, res) => {
 };
 
 // Get a specific note
-exports.getNote = async (req, res) => {
+const getNote = async (req, res) => {
   try {
     const note = await Note.findById(req.params.id).populate('project');
     
@@ -69,7 +69,7 @@ exports.getNote = async (req, res) => {
 };
 
 // Create a note
-exports.createNote = async (req, res) => {
+const createNote = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -117,7 +117,7 @@ exports.createNote = async (req, res) => {
 };
 
 // Update a note
-exports.updateNote = async (req, res) => {
+const updateNote = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

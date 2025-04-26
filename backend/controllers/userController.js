@@ -1,7 +1,7 @@
 const User = require('../models/User');
 
 // Get current user
-exports.getCurrentUser = async (req, res) => {
+const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-integrations.notion.accessToken -integrations.gmail.accessToken -integrations.gmail.refreshToken -integrations.linkedin.accessToken');
     
@@ -17,7 +17,7 @@ exports.getCurrentUser = async (req, res) => {
 };
 
 // Update user preferences
-exports.updatePreferences = async (req, res) => {
+const updatePreferences = async (req, res) => {
   try {
     const { theme, notificationSettings } = req.body;
     
@@ -48,7 +48,7 @@ exports.updatePreferences = async (req, res) => {
 };
 
 // Connect integration
-exports.connectIntegration = async (req, res) => {
+const connectIntegration = async (req, res) => {
   try {
     const { service, accessToken, refreshToken } = req.body;
     
@@ -94,7 +94,7 @@ exports.connectIntegration = async (req, res) => {
 };
 
 // Disconnect integration
-exports.disconnectIntegration = async (req, res) => {
+const disconnectIntegration = async (req, res) => {
   try {
     const { service } = req.params;
     
