@@ -97,6 +97,11 @@ export function useEmailApi() {
       bcc
     });
     return true;
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return false;
+  }
+}, [api]);
 
   const addTagToEmail = useCallback(async (emailId: string, tag: string): Promise<boolean> => {
     try {
@@ -128,4 +133,4 @@ export function useEmailApi() {
     addTagToEmail,
     removeTagFromEmail,
   };
-}
+};

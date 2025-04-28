@@ -152,10 +152,110 @@ const summarizeNote = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
-}; 
+};
+
+// Generate chat response
+const generateChatResponse = async (req, res) => {
+  try {
+    const { message, history, context, model } = req.body;
+    if (!message) {
+      return res.status(400).json({ message: 'Message is required' });
+    }
+    const response = await aiService.generateChatResponse(message, history, context, model);
+    if (response.error) {
+      return res.status(500).json({ message: response.error });
+    }
+    res.json({ response: response.response });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error generating chat response' });
+  }
+};
+
+// Suggest tasks
+const suggestTasks = async (req, res) => {
+  try {
+    const { userId, context, model } = req.body;
+    if (!userId) {
+      // Assuming userId comes from auth middleware if not in body
+      req.body.userId = req.user.id;
+    }
+    const suggestions = await aiService.suggestTasks(req.body.userId, context, model);
+    if (suggestions.error) {
+      return res.status(500).json({ message: suggestions.error });
+    }
+    res.json({ suggestions: suggestions.suggestions });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error suggesting tasks' });
+  }
+};
+
+// Analyze productivity
+const analyzeProductivity = async (req, res) => {
+  try {
+    const { userId, timeRange, data, model } = req.body;
+    if (!userId) {
+       req.body.userId = req.user.id;
+    }
+    if (!timeRange || !data) {
+      return res.status(400).json({ message: 'Time range and data are required' });
+    }
+    const analysis = await aiService.analyzeProductivity(req.body.userId, timeRange, data, model);
+    if (analysis.error) {
+      return res.status(500).json({ message: analysis.error });
+    }
+    res.json({ analysis: analysis.analysis });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error analyzing productivity' });
+  }
+};
+
+// Summarize emails
+const summarizeEmails = async (req, res) => {
+  try {
+    const { emails, maxLength, model } = req.body;
+    if (!emails || !Array.isArray(emails)) {
+      return res.status(400).json({ message: 'Emails array is required' });
+    }
+    const summary = await aiService.summarizeEmails(emails, maxLength, model);
+    if (summary.error) {
+      return res.status(500).json({ message: summary.error });
+    }
+    res.json({ summary: summary.summary });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error summarizing emails' });
+  }
+};
+
+// Generate daily summary
+const generateDailySummary = async (req, res) => {
+  try {
+    const { userId, date, model } = req.body;
+     if (!userId) {
+       req.body.userId = req.user.id;
+    }
+    const summary = await aiService.generateDailySummary(req.body.userId, date, model);
+    if (summary.error) {
+      return res.status(500).json({ message: summary.error });
+    }
+    res.json(summary);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error generating daily summary' });
+  }
+};
+
 module.exports = {
   generateEmailReply,
   generateLinkedInPost,
   prioritizeTasks,
-  summarizeNote
+  summarizeNote,
+  generateChatResponse,
+  suggestTasks,
+  analyzeProductivity,
+  summarizeEmails,
+  generateDailySummary
 };
