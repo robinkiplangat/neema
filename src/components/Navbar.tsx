@@ -52,27 +52,6 @@ const Navbar = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Link 
-            to="/pricing" 
-            className="text-foreground/80 hover:text-foreground transition-colors"
-          >
-            Pricing
-          </Link>
-          <Link 
-            to="/resources" 
-            className="text-foreground/80 hover:text-foreground transition-colors"
-          >
-            Resources
-          </Link>
-          <SignedIn>
-            <Link 
-              to="/dashboard" 
-              className={`text-foreground/80 hover:text-foreground transition-colors`}
-            >
-              Dashboard
-            </Link>
-          </SignedIn>
         </nav>
 
         {/* Desktop CTA */}
@@ -131,29 +110,6 @@ const Navbar = () => {
             >
               Features
             </Link>
-            <Link 
-              to="/pricing" 
-              className="py-2 text-foreground/80 hover:text-foreground"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Pricing
-            </Link>
-            <Link 
-              to="/resources" 
-              className="py-2 text-foreground/80 hover:text-foreground"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Resources
-            </Link>
-            <SignedIn>
-              <Link 
-                to="/dashboard" 
-                className="py-2 text-foreground/80 hover:text-foreground"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Dashboard
-              </Link>
-            </SignedIn>
             <div className="flex flex-col gap-3 pt-2">
               <SignedOut>
                 <Link to="/login" onClick={() => setIsMenuOpen(false)}>
