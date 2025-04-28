@@ -51,7 +51,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     { name: "Projects", href: "/kanban", icon: <Kanban className="h-5 w-5" /> },
     { name: "Team", href: "/team", icon: <Users className="h-5 w-5" /> },
     { name: "Reports", href: "/reports", icon: <BarChart3 className="h-5 w-5" /> },
-    { name: "Settings", href: "/settings", icon: <Settings className="h-5 w-5" /> },
+  ];
+
+  const settingsNavItems = [
+    { name: "Profile", href: "/settings", icon: <Settings className="h-4 w-4 mr-2" /> },
+    { name: "Team Settings", href: "/settings/team", icon: <Users className="h-4 w-4 mr-2" /> },
+    { name: "Billing", href: "/settings/billing", icon: <BarChart3 className="h-4 w-4 mr-2" /> },
   ];
   
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -138,9 +143,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Team Settings</DropdownMenuItem>
-                  <DropdownMenuItem>Billing</DropdownMenuItem>
+                  {settingsNavItems.map((item) => (
+                    <DropdownMenuItem asChild key={item.name}>
+                      <Link to={item.href} className="flex items-center w-full">
+                        {item.icon}
+                        <span>{item.name}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/" className="flex items-center w-full">
