@@ -39,6 +39,12 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', time: new Date() });
 });
 
+// Devices registration route (no auth required)
+app.use('/api/devices', require('./routes/devices'));
+
+// Productivity endpoints (require auth)
+app.use('/api/productivity', requireAuthAndLoadUser, require('./routes/productivity'));
+
 // Routes requiring authentication
 // Apply the middleware BEFORE these routes
 app.use('/api/tasks', requireAuthAndLoadUser, require('./routes/tasks'));
