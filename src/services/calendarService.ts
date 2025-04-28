@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from './api';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -28,15 +28,8 @@ export interface CalendarEvent {
   isEditable?: boolean;
 }
 
-// Configure axios with the API key
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${API_KEY}`,
-    'X-Calendar-API-Key': CALENDAR_API_KEY
-  }
-});
+// Optionally, add X-Calendar-API-Key to each request if your backend requires it.
+// Otherwise, rely on the shared api instance for Clerk JWT auth.
 
 export const fetchEvents = async (
   userId: string,
