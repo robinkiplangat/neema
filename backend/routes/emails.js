@@ -16,4 +16,17 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// @route   GET api/emails/unread
+// @desc    Get unread emails for a user
+// @access  Private
+router.get('/unread', auth, async (req, res) => {
+  try {
+    const emails = await Email.find({ user: req.user.id, isRead: false });
+    res.json(emails);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

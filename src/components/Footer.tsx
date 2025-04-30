@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Twitter, Linkedin, Facebook } from 'lucide-react'; // Import icons
 
 const Footer = () => {
   return (
@@ -51,6 +52,15 @@ const Footer = () => {
               <li><Link to="/legal" className="text-muted-foreground hover:text-foreground transition-colors">Legal</Link></li>
             </ul>
           </div>
+
+          <div>
+            <h3 className="font-semibold mb-4">Navigation</h3>
+            <ul className="space-y-3">
+              <li><Link to="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</Link></li>
+              <li><Link to="/resources" className="text-muted-foreground hover:text-foreground transition-colors">Resources</Link></li>
+              <li><Link to="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">Dashboard</Link></li>
+            </ul>
+          </div>
         </div>
         
         <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
@@ -58,14 +68,14 @@ const Footer = () => {
             © {new Date().getFullYear()} Neema. All rights reserved.
           </p>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              Twitter
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Twitter">
+              <Twitter className="h-5 w-5" />
             </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              LinkedIn
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="LinkedIn">
+              <Linkedin className="h-5 w-5" />
             </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              Facebook
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Facebook">
+              <Facebook className="h-5 w-5" />
             </a>
           </div>
         </div>

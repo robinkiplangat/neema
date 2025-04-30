@@ -19,6 +19,7 @@ const Timesheet = lazy(() => import("./pages/Timesheet"));
 const KanbanBoard = lazy(() => import("./pages/KanbanBoard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Settings = lazy(() => import("./pages/Settings"));
+const Schedule = lazy(() => import("./pages/Schedule"));
 
 const queryClient = new QueryClient();
 
@@ -112,6 +113,14 @@ const App = () => {
                         <Dashboard />
                       </ProtectedRoute>
                     } 
+                  />
+                  <Route
+                    path="/schedule"
+                    element={
+                      <ProtectedRoute>
+                        <Schedule />
+                      </ProtectedRoute>
+                    }
                   />
                   <Route 
                     path="/timesheet" 

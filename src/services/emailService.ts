@@ -1,7 +1,4 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-const API_KEY = import.meta.env.VITE_API_KEY;
+import { useClerkApi } from './clerkApi';
 const EMAIL_API_KEY = import.meta.env.VITE_EMAIL_API_KEY;
 
 export interface EmailSender {
@@ -23,72 +20,67 @@ export interface Email {
   userId: string;
 }
 
-// Configure axios with the API key
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${API_KEY}`,
-    'X-Email-API-Key': EMAIL_API_KEY
-  }
-});
+// Optionally, you can add X-Email-API-Key to each request if your backend requires it.
+// Otherwise, rely on the api instance for Clerk JWT auth.
 
-export const fetchEmails = async (userId: string, limit: number = 20): Promise<Email[]> => {
-  try {
-    const response = await api.get(`/emails`, {
-      params: { userId, limit }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching emails:', error);
-    return [];
-  }
-};
+// Export a hook that provides all email API methods using Clerk
+import { useCallback } from 'react';
 
-export const fetchUnreadEmails = async (userId: string): Promise<Email[]> => {
-  try {
-    const response = await api.get(`/emails/unread`, {
-      params: { userId }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching unread emails:', error);
-    return [];
-  }
-};
+export function useEmailApi() {
+  const api = useClerkApi();
 
-export const fetchEmailById = async (emailId: string): Promise<Email | null> => {
-  try {
-    const response = await api.get(`/emails/${emailId}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching email by id:', error);
-    return null;
-  }
-};
+  const fetchEmails = useCallback(async (userId: string, limit: number = 20): Promise<Email[]> => {
+    try {
+      const response = await api.get(`/emails`, { params: { userId, limit } });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching emails:', error);
+      return [];
+    }
+  }, [api]);
 
-export const markEmailAsRead = async (emailId: string): Promise<boolean> => {
-  try {
-    await api.put(`/emails/${emailId}/read`);
-    return true;
-  } catch (error) {
-    console.error('Error marking email as read:', error);
-    return false;
-  }
-};
+  const fetchUnreadEmails = useCallback(async (userId: string): Promise<Email[]> => {
+    try {
+      const response = await api.get(`/emails/unread`, { params: { userId } });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching unread emails:', error);
+      return [];
+    }
+  }, [api]);
 
-export const toggleEmailStar = async (emailId: string): Promise<boolean> => {
-  try {
-    await api.put(`/emails/${emailId}/star`);
-    return true;
-  } catch (error) {
-    console.error('Error toggling email star:', error);
-    return false;
-  }
-};
+  const fetchEmailById = useCallback(async (emailId: string): Promise<Email | null> => {
+    try {
+      const response = await api.get(`/emails/${emailId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching email by id:', error);
+      return null;
+    }
+  }, [api]);
 
-export const sendEmail = async (
-  userId: string,
+  const markEmailAsRead = useCallback(async (emailId: string): Promise<boolean> => {
+    try {
+      await api.put(`/emails/${emailId}/read`);
+      return true;
+    } catch (error) {
+      console.error('Error marking email as read:', error);
+      return false;
+    }
+  }, [api]);
+
+  const toggleEmailStar = useCallback(async (emailId: string): Promise<boolean> => {
+    try {
+      await api.put(`/emails/${emailId}/star`);
+      return true;
+    } catch (error) {
+      console.error('Error toggling email star:', error);
+      return false;
+    }
+  }, [api]);
+
+  const sendEmail = useCallback(async (
+    userId: string,
   to: string[],
   subject: string,
   body: string,
@@ -109,30 +101,36 @@ export const sendEmail = async (
     console.error('Error sending email:', error);
     return false;
   }
-};
+}, [api]);
 
-export const addTagToEmail = async (
-  emailId: string,
-  tag: string
-): Promise<boolean> => {
-  try {
-    await api.put(`/emails/${emailId}/tag`, { tag });
-    return true;
-  } catch (error) {
-    console.error('Error adding tag to email:', error);
-    return false;
-  }
-};
+  const addTagToEmail = useCallback(async (emailId: string, tag: string): Promise<boolean> => {
+    try {
+      await api.put(`/emails/${emailId}/tag`, { tag });
+      return true;
+    } catch (error) {
+      console.error('Error adding tag to email:', error);
+      return false;
+    }
+  }, [api]);
 
-export const removeTagFromEmail = async (
-  emailId: string,
-  tag: string
-): Promise<boolean> => {
-  try {
-    await api.delete(`/emails/${emailId}/tag/${encodeURIComponent(tag)}`);
-    return true;
-  } catch (error) {
-    console.error('Error removing tag from email:', error);
-    return false;
-  }
-}; 
+  const removeTagFromEmail = useCallback(async (emailId: string, tag: string): Promise<boolean> => {
+    try {
+      await api.delete(`/emails/${emailId}/tag/${encodeURIComponent(tag)}`);
+      return true;
+    } catch (error) {
+      console.error('Error removing tag from email:', error);
+      return false;
+    }
+  }, [api]);
+
+  return {
+    fetchEmails,
+    fetchUnreadEmails,
+    fetchEmailById,
+    markEmailAsRead,
+    toggleEmailStar,
+    sendEmail,
+    addTagToEmail,
+    removeTagFromEmail,
+  };
+};
