@@ -14,7 +14,26 @@ connectDB();
 
 // Middleware
 app.use(helmet());
-app.use(cors()); // Configure CORS properly for your frontend URL in production
+// Configure CORS
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:8080', // Allow frontend URL from env or default to localhost
+  'https://neema.ch3ruiyotai.space' // Explicitly allow production frontend
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true // Allow cookies to be sent
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -30,15 +49,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// More strict rate limiting for AI endpoints
-const aiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50 
-});
-
 // --- Routes --- 
 
-// Public routes (like health check, maybe parts of users for signup?)
+// Public routes (like health check)
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', time: new Date() });
 });
@@ -46,21 +59,8 @@ app.get('/health', (req, res) => {
 // Devices registration route (no auth required)
 app.use('/api/devices', require('./routes/devices'));
 
-// Productivity endpoints (require auth)
-app.use('/api/productivity', requireAuthAndLoadUser, require('./routes/productivity'));
-
-// Routes requiring authentication
-// Apply the middleware BEFORE these routes
-app.use('/api/tasks', requireAuthAndLoadUser, require('./routes/tasks'));
-app.use('/api/projects', requireAuthAndLoadUser, require('./routes/projects'));
-app.use('/api/notes', requireAuthAndLoadUser, require('./routes/notes'));
-app.use('/api/users', requireAuthAndLoadUser, require('./routes/users')); // User routes might need auth for profile updates etc.
-app.use('/api/ai', requireAuthAndLoadUser, aiLimiter, require('./routes/ai'));
-
-// Integration Routes (also require auth)
-app.use('/api/calendar', requireAuthAndLoadUser, require('./routes/api/calendar')); 
-app.use('/integrations/notion', requireAuthAndLoadUser, require('./routes/notion')); 
-app.use('/integrations/linkedin', requireAuthAndLoadUser, require('./routes/linkedin')); 
+// Mount the central API router
+app.use('/api', require('./routes/index')); // Use the central router for all /api/* routes 
 
 // Catch-all route to serve index.html for client-side routing (Commented out for development)
 // app.get('*', (req, res) => {
