@@ -158,16 +158,36 @@ const summarizeNote = async (req, res) => {
 const generateChatResponse = async (req, res) => {
   try {
     const { message, history, context, model } = req.body;
+    console.log('Chat request received:', { message, model });
+    
     if (!message) {
       return res.status(400).json({ message: 'Message is required' });
     }
-    const response = await aiService.generateChatResponse(message, history, context, model);
+    
+    // For testing without authentication
+    let userId = "test-user";
+    if (req.user && req.user.id) {
+      userId = req.user.id;
+    }
+    
+    console.log('Using userId:', userId);
+    
+    // Add userId to context if not present
+    const enhancedContext = {
+      ...context,
+      userId
+    };
+    
+    const response = await aiService.generateChatResponse(message, history, enhancedContext, model);
+    console.log('AI service response:', response.error ? 'Error' : 'Success');
+    
     if (response.error) {
+      console.error('AI response error:', response.error, response.details || '');
       return res.status(500).json({ message: response.error });
     }
     res.json({ response: response.response });
   } catch (err) {
-    console.error(err);
+    console.error('Error in generateChatResponse controller:', err);
     res.status(500).json({ message: 'Server error generating chat response' });
   }
 };
@@ -248,6 +268,30 @@ const generateDailySummary = async (req, res) => {
   }
 };
 
+// Get available models
+const getAvailableModels = async (req, res) => {
+  try {
+    const models = aiService.getAvailableModels();
+    console.log("Available models:", models); // Debug log
+    res.json({ models });
+  } catch (err) {
+    console.error("Error getting models:", err);
+    res.status(500).json({ message: 'Server error fetching available models' });
+  }
+};
+
+// Get providers status
+const getProvidersStatus = async (req, res) => {
+  try {
+    const providers = aiService.getProvidersStatus();
+    console.log("Providers status:", providers); // Debug log
+    res.json({ providers });
+  } catch (err) {
+    console.error("Error getting provider status:", err);
+    res.status(500).json({ message: 'Server error fetching provider status' });
+  }
+};
+
 module.exports = {
   generateEmailReply,
   generateLinkedInPost,
@@ -257,5 +301,7 @@ module.exports = {
   suggestTasks,
   analyzeProductivity,
   summarizeEmails,
-  generateDailySummary
+  generateDailySummary,
+  getAvailableModels,
+  getProvidersStatus
 };

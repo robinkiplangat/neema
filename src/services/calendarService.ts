@@ -1,8 +1,8 @@
 import api from './api';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+// Use consistent API URL with the rest of the application
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 const API_KEY = import.meta.env.VITE_API_KEY;
-const CALENDAR_API_KEY = import.meta.env.VITE_CALENDAR_API_KEY;
 
 export interface Participant {
   id?: string;
@@ -38,7 +38,8 @@ export const fetchEvents = async (
   calendarIds?: string[]
 ): Promise<CalendarEvent[]> => {
   try {
-    const response = await api.get(`/events`, {
+    // Use correct endpoint path matching the backend route structure
+    const response = await api.get(`/calendar/events`, {
       params: {
         userId,
         start: start?.toISOString(),
@@ -55,7 +56,7 @@ export const fetchEvents = async (
 
 export const fetchEventById = async (eventId: string): Promise<CalendarEvent | null> => {
   try {
-    const response = await api.get(`/events/${eventId}`);
+    const response = await api.get(`/calendar/events/${eventId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching event by id:', error);
@@ -75,7 +76,7 @@ export const fetchTodayEvents = async (userId: string): Promise<CalendarEvent[]>
 
 export const createEvent = async (event: Omit<CalendarEvent, 'id'>): Promise<CalendarEvent | null> => {
   try {
-    const response = await api.post(`/events`, event);
+    const response = await api.post(`/calendar/events`, event);
     return response.data;
   } catch (error) {
     console.error('Error creating event:', error);
@@ -85,7 +86,7 @@ export const createEvent = async (event: Omit<CalendarEvent, 'id'>): Promise<Cal
 
 export const updateEvent = async (eventId: string, updates: Partial<CalendarEvent>): Promise<CalendarEvent | null> => {
   try {
-    const response = await api.put(`/events/${eventId}`, updates);
+    const response = await api.put(`/calendar/events/${eventId}`, updates);
     return response.data;
   } catch (error) {
     console.error('Error updating event:', error);
@@ -95,7 +96,7 @@ export const updateEvent = async (eventId: string, updates: Partial<CalendarEven
 
 export const deleteEvent = async (eventId: string): Promise<boolean> => {
   try {
-    await api.delete(`/events/${eventId}`);
+    await api.delete(`/calendar/events/${eventId}`);
     return true;
   } catch (error) {
     console.error('Error deleting event:', error);
@@ -108,7 +109,7 @@ export const addParticipantToEvent = async (
   participant: Omit<Participant, 'id'>
 ): Promise<boolean> => {
   try {
-    await api.post(`/events/${eventId}/participants`, participant);
+    await api.post(`/calendar/events/${eventId}/participants`, participant);
     return true;
   } catch (error) {
     console.error('Error adding participant to event:', error);
@@ -118,7 +119,7 @@ export const addParticipantToEvent = async (
 
 export const fetchUserCalendars = async (userId: string): Promise<{ id: string; name: string; color: string }[]> => {
   try {
-    const response = await api.get(`/calendars`, {
+    const response = await api.get(`/calendar/calendars`, {
       params: { userId }
     });
     return response.data;
@@ -135,7 +136,7 @@ export const suggestMeetingTimes = async (
   latestDate: Date
 ): Promise<{ start: string; end: string }[]> => {
   try {
-    const response = await api.post(`/events/suggest-times`, {
+    const response = await api.post(`/calendar/events/suggest-times`, {
       participants,
       durationMinutes,
       earliestDate: earliestDate.toISOString(),

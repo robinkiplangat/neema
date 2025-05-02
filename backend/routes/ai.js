@@ -25,8 +25,8 @@ router.post('/notes/summarize', clerkAuth, aiController.summarizeNote);
 
 // @route   POST api/ai/chat
 // @desc    Generate chat response
-// @access  Private
-router.post('/chat', clerkAuth, aiController.generateChatResponse);
+// @access  Public (for testing)
+router.post('/chat', aiController.generateChatResponse);
 
 // @route   POST api/ai/suggest-tasks
 // @desc    Suggest tasks based on context
@@ -47,6 +47,16 @@ router.post('/summarize-emails', clerkAuth, aiController.summarizeEmails);
 // @desc    Generate daily summary
 // @access  Private
 router.post('/daily-summary', clerkAuth, aiController.generateDailySummary);
+
+// @route   GET api/ai/models
+// @desc    Get available LLM models
+// @access  Public (for testing)
+router.get('/models', aiController.getAvailableModels);
+
+// @route   GET api/ai/providers
+// @desc    Get LLM provider status
+// @access  Public (for testing)
+router.get('/providers', aiController.getProvidersStatus);
 
 
 module.exports = router;

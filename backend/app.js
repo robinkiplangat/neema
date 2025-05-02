@@ -17,11 +17,17 @@ app.use(helmet());
 // Configure CORS
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:8080', // Allow frontend URL from env or default to localhost
+  'http://localhost:8081', // Allow alternate localhost port for development
   'https://neema.ch3ruiyotai.space' // Explicitly allow production frontend
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
+    // For development/testing - allow all origins
+    if (process.env.NODE_ENV === 'development') {
+      return callback(null, true);
+    }
+    
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {

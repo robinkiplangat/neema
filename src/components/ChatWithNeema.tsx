@@ -2,11 +2,29 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Mic, MicOff, Send, Calendar, FileText, Linkedin, RefreshCw } from 'lucide-react';
+import { 
+  Mic, 
+  MicOff, 
+  Send, 
+  Calendar, 
+  FileText, 
+  Linkedin, 
+  RefreshCw, 
+  Settings 
+} from 'lucide-react';
 import * as aiService from '@/services/aiService';
 import { useAI } from '@/context/AIContext';
 import { useToast } from '@/hooks/use-toast';
 import { useUser } from '@clerk/clerk-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LLMModel } from '@/services/aiService';
 
 interface Message {
   sender: 'User' | 'Neema';
@@ -26,9 +44,34 @@ const ChatWithNeema = () => {
   const [input, setInput] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [models, setModels] = useState<LLMModel[]>([]);
+  const [selectedModel, setSelectedModel] = useState<string>('');
+  const [loadingModels, setLoadingModels] = useState(false);
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognition = useRef<SpeechRecognition | null>(null);
   const [transcript, setTranscript] = useState('');
+
+  // Load available AI models
+  useEffect(() => {
+    const fetchModels = async () => {
+      setLoadingModels(true);
+      try {
+        const modelList = await aiService.getAvailableModels();
+        setModels(modelList);
+        // Set default model from env or first available
+        const defaultModel = import.meta.env.VITE_DEFAULT_MODEL || 
+          (modelList.length > 0 ? `${modelList[0].providerId}/${modelList[0].id}` : '');
+        setSelectedModel(defaultModel);
+      } catch (error) {
+        console.error('Error loading models:', error);
+      } finally {
+        setLoadingModels(false);
+      }
+    };
+    
+    fetchModels();
+  }, []);
 
   // Set up speech recognition
   useEffect(() => {
@@ -153,7 +196,7 @@ const ChatWithNeema = () => {
       }));
 
       // Generate response with context
-      const response = await aiService.generateResponse(userMessage, chatHistory, neemaContext);
+      const response = await aiService.generateResponse(userMessage, chatHistory, neemaContext, selectedModel);
       
       // If message contains refresh/update requests, refresh AI context
       if (userMessage.toLowerCase().includes('refresh') || 
@@ -232,6 +275,40 @@ const ChatWithNeema = () => {
     }
   };
 
+  // Group models by provider
+  const modelsByProvider = models.reduce((acc, model) => {
+    const providerName = model.provider || model.providerId;
+    if (!acc[providerName]) {
+      acc[providerName] = [];
+    }
+    acc[providerName].push(model);
+    return acc;
+  }, {} as Record<string, LLMModel[]>);
+
+  const handleSelectModel = (providerId: string, modelId: string) => {
+    const fullModelId = `${providerId}/${modelId}`;
+    setSelectedModel(fullModelId);
+    
+    toast({
+      title: "Model changed",
+      description: `Now using ${modelId} from ${providerId}`
+    });
+  };
+
+  // Get display name for current model
+  const getSelectedModelName = () => {
+    if (!selectedModel) return 'Default AI Model';
+    
+    const [providerId, modelId] = selectedModel.split('/');
+    const model = models.find(m => m.providerId === providerId && m.id === modelId);
+    
+    if (model) {
+      return `${model.name} (${model.provider})`;
+    }
+    
+    return selectedModel;
+  };
+
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="pb-2">
@@ -256,6 +333,37 @@ const ChatWithNeema = () => {
             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
               <Linkedin className="h-4 w-4" />
             </Button>
+            
+            {/* Model selector dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <Settings className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>AI Model</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-xs opacity-50" disabled>
+                  {loadingModels ? 'Loading models...' : getSelectedModelName()}
+                </DropdownMenuItem>
+                
+                {Object.entries(modelsByProvider).map(([provider, providerModels]) => (
+                  <React.Fragment key={provider}>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel className="text-xs">{provider}</DropdownMenuLabel>
+                    {providerModels.map(model => (
+                      <DropdownMenuItem 
+                        key={model.id}
+                        onClick={() => handleSelectModel(model.providerId, model.id)}
+                      >
+                        {model.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </CardTitle>
       </CardHeader>
