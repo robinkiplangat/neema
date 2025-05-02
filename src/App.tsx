@@ -86,7 +86,7 @@ const App = () => {
         signInUrl="/login"
         signUpUrl="/joinwaitlist"
         waitlistUrl="/joinwaitlist"
-        afterSignInUrl="/dashboard"
+        fallbackRedirectUrl="/dashboard"
         afterSignUpUrl="/joinwaitlist"
       >
         <AIProvider>

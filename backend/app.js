@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path'); // Import path module
 const connectDB = require('./config/db');
 const { requireAuthAndLoadUser } = require('./middleware/auth'); // Import the middleware
 
@@ -16,6 +17,9 @@ app.use(helmet());
 app.use(cors()); // Configure CORS properly for your frontend URL in production
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Serve static files from the React build directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -57,6 +61,12 @@ app.use('/api/ai', requireAuthAndLoadUser, aiLimiter, require('./routes/ai'));
 app.use('/api/calendar', requireAuthAndLoadUser, require('./routes/api/calendar')); 
 app.use('/integrations/notion', requireAuthAndLoadUser, require('./routes/notion')); 
 app.use('/integrations/linkedin', requireAuthAndLoadUser, require('./routes/linkedin')); 
+
+// Catch-all route to serve index.html for client-side routing (Commented out for development)
+// app.get('*', (req, res) => {
+//   // In production, this should point to the frontend build output (e.g., ../dist/index.html)
+//   res.sendFile(path.join(__dirname, 'public', 'index.html')); 
+// });
 
 // --- Error Handling --- 
 // Note: Clerk's default error handler might catch auth errors before this.

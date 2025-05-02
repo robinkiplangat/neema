@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from './api'; // Import the configured api instance
 
 export interface CalendarEvent {
   id: string;
@@ -17,18 +18,18 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
  */
 export const fetchCalendarEvents = async (startDate?: Date, endDate?: Date): Promise<CalendarEvent[]> => {
   try {
-    const params = new URLSearchParams();
+    const params: Record<string, string> = {};
     
     if (startDate) {
-      params.append('start', startDate.toISOString());
+      params['start'] = startDate.toISOString();
     }
     
     if (endDate) {
-      params.append('end', endDate.toISOString());
+      params['end'] = endDate.toISOString();
     }
     
-    const url = `${API_BASE_URL}/api/calendar/events${params.toString() ? `?${params.toString()}` : ''}`;
-    const response = await axios.get(url);
+    // Use the configured 'api' instance which includes the auth interceptor
+    const response = await api.get('/api/calendar/events', { params });
     
     // Check response type and handle accordingly
     if (response.headers['content-type']?.includes('application/json')) {
@@ -43,6 +44,7 @@ export const fetchCalendarEvents = async (startDate?: Date, endDate?: Date): Pro
       return [];
     }
   } catch (error) {
+    // Use a more robust check for Axios errors
     if (axios.isAxiosError(error)) {
       console.error('Calendar API Error:', {
         status: error.response?.status,
@@ -62,7 +64,8 @@ export const fetchCalendarEvents = async (startDate?: Date, endDate?: Date): Pro
  */
 export const createCalendarEvent = async (event: Omit<CalendarEvent, 'id'>): Promise<CalendarEvent | null> => {
   try {
-    const response = await axios.post('/api/calendar/events', event);
+    // Use the configured 'api' instance
+    const response = await api.post('/api/calendar/events', event);
     return response.data;
   } catch (error) {
     console.error('Error creating calendar event:', error);
@@ -86,4 +89,4 @@ export const fetchTodayEvents = async (): Promise<CalendarEvent[]> => {
     console.error('Error fetching today\'s events:', error);
     return [];
   }
-}; 
+};
