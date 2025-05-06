@@ -5,8 +5,6 @@ const app = require('./app');
 
 const PORT = process.env.PORT || 5000;
 
-const app = express();
-
 // --- CORS Configuration ---
 const allowedOrigins = [
   'http://localhost:8080', // Your local dev frontend
