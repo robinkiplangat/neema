@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const app = require('./app');
+const app = require('./app'); // Use the app imported from ./app.js
 
 const PORT = process.env.PORT || 5000;
 
@@ -27,11 +27,13 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization', /* other headers */], // Allowed headers
 };
 
+// Apply CORS middleware to the imported app
 app.use(cors(corsOptions));
 // Enable preflight requests for all routes
 app.options('*', cors(corsOptions));
 // --- End CORS Configuration ---
 
+// Remove the redundant declaration: const app = express();
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
