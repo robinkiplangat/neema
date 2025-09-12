@@ -34,27 +34,15 @@ const UserSchema = new Schema({
     }
     // Add other user preferences here
   },
-  // Safety-related fields from v2.0
+  // Safety-related fields
   safetyProfile: {
-    riskTolerance: { type: String, enum: ['conservative', 'moderate', 'open'], default: 'moderate' },
-    vulnerabilityFactors: [String],
-    preferredProtections: [String], // Assuming SafetyFeature is represented by a string ID
-    emergencyContacts: [{
-        name: String,
-        contactMethod: String,
-        contactInfo: String
-    }],
-    culturalContext: { type: String, enum: ['kenyan', 'east_african', 'international'], default: 'international' },
-    languagePreferences: [String]
+    type: Schema.Types.ObjectId,
+    ref: 'SafetyProfile'
   },
-  riskAssessment: {
-    score: { type: Number, min: 0, max: 100, default: 0 },
-    lastAssessed: { type: Date, default: Date.now }
-  },
-  protectionLevel: {
-    type: String,
-    enum: ['standard', 'elevated', 'maximum'],
-    default: 'standard'
+  safetySettings: {
+    emergencyMode: { type: Boolean, default: false },
+    lastSafetyCheck: { type: Date, default: Date.now },
+    safetyScore: { type: Number, min: 0, max: 10, default: 5 }
   },
   // Store integration tokens and status directly here
   integrations: {

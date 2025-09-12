@@ -17,7 +17,7 @@ const Index = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-20">
             <div className="flex-1 space-y-8 max-w-2xl">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight animate-fade-in leading-tight">
-                <span>Your Online Safety Navigator </span>
+                <span>Your Online Navigator </span>
                 <span className="text-neema-primary">Shield</span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-xl animate-slide-up mt-6" style={{animationDelay: '0.2s'}}>
@@ -98,7 +98,7 @@ const Index = () => {
       <section className="py-24 md:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Safety-First Features for Women Entrepreneurs</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">SbD Features for Women Entrepreneurs</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Every feature is designed with your safety and empowerment in mind, so you can focus on building your business.
             </p>
@@ -112,12 +112,12 @@ const Index = () => {
             />
             <FeatureCard 
               icon={<Lock className="h-10 w-10 text-neema-primary" />} 
-              title="Secure Communication" 
+              title="Secure Comms" 
               description="End-to-end encrypted notes and messages with threat detection for safe communications."
             />
             <FeatureCard 
               icon={<Users className="h-10 w-10 text-neema-primary" />} 
-              title="Safe Professional Networking" 
+              title="Safe Networking" 
               description="Verified connections and risk assessment for LinkedIn interactions with safe meeting recommendations."
             />
             <FeatureCard 
